@@ -4,6 +4,11 @@ from config import config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from .models import db
+from .routes.auth import auth_bp
+from flask_cors import CORS
+from flask_jwt_extended import JWTManager
+
+jwt = JWTManager()
 
 def create_app(config_name=None):
     if config_name is None:
@@ -15,6 +20,12 @@ def create_app(config_name=None):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
 
+    jwt.init_app(app)
+
+    CORS(app)
+
+    app.register_blueprint(auth_bp, url_prefix='/auth')
+
     db.init_app(app)
     migrate = Migrate(app, db)
 
@@ -24,5 +35,5 @@ def create_app(config_name=None):
     @app.route('/')
     def index():
         return jsonify(message="Flask API is running!")
-    
+        
     return app

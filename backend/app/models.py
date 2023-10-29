@@ -47,49 +47,16 @@ class User(db.Model):
             if not User.get_by_user_id(user_id):
                 return user_id
 
-    # def generate_user_id(self):
-    #     if self.is_patient():
-    #         while True:
-    #             user_id = ''.join([str(random.randint(0, 9)) for _ in range(8)])
-    #             if not User.get_by_user_id(user_id):
-    #                 return user_id
-    #     return None
+
             
     def save(self):
-        if not self.id:
-            db.session.add(self)
-        if not self.user_id:  
+        if not self.user_id:
             self.user_id = self.generate_user_id()
+        db.session.add(self)
         db.session.commit()
 
-    # def save(self):
-    #     if not self.id:
-    #         db.session.add(self)
-    #     self.user_id = self.generate_user_id()
-    #     db.session.commit()
-    
 
 
-    # @staticmethod
-    # def generate_user_id():
-    #     while True:
-    #         user_id = ''.join([str(random.randint(0, 9)) for _ in range(8)])
-    #         if not User.get_by_user_id(user_id):
-    #             print(f"Generated user_id: {user_id}")
-    #             return user_id
-            
-    # def save(self):
-    #     if not self.id:
-    #         db.session.add(self)
-    #     if self.is_patient() and not self.user_id:
-    #         self.user_id = self.generate_user_id()
-    #     db.session.commit()
-
-    # def is_patient(self):
-    #     if self.role:
-    #         print(f"Role name: {self.role.name}")
-    #         return self.role.name == 'Patient'
-    #     return False
 
 class Role(db.Model):
     

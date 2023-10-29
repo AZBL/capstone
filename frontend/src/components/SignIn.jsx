@@ -1,14 +1,25 @@
 import { useState } from "react";
+import axios from "axios";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSignIn = (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
-    //add functionality, make async
-    console.log("sign in handled");
+
+    try {
+      const response = await axios.post("/auth/login", {
+        email: email,
+        password: password,
+      });
+      // remove line below after dev
+      console.log("Login successful:", response.data);
+    } catch (err) {
+      setError("Login failed.");
+      console.error("Login error:", err);
+    }
   };
 
   return (

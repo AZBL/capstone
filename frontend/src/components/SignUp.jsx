@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 
 const SignUp = () => {
   const [firstName, setFirstName] = useState("");
@@ -6,11 +7,26 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [dob, setDob] = useState("");
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
-    // add functionality, make asynchronous
-    console.log("sign up handled");
+
+    try {
+      const response = await axios.post("/auth/register", {
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        password: password,
+        dob: dob,
+      });
+      // remove line below after dev
+      console.log("Registration successful:", response.data);
+      //add navigate to profile page
+    } catch (err) {
+      setError("Registration failed.");
+      console.error("Registration error:", err);
+    }
   };
 
   return (
@@ -29,6 +45,13 @@ const SignUp = () => {
         value={lastName}
         onChange={(e) => setLastName(e.target.value)}
       />
+      <label htmlFor="dob">Date of Birth</label>
+      <input
+        type="date"
+        id="dob"
+        value={dob}
+        onChange={(e) => setDob(e.target.value)}
+      />
       <label htmlFor="email">Email</label>
       <input
         type="email"
@@ -44,6 +67,7 @@ const SignUp = () => {
         onChange={(e) => setPassword(e.target.value)}
       />
       <button className="formButton">Sign Up</button>
+      {error && <p className="errorMessage">{error}</p>}
     </form>
   );
 };

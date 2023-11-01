@@ -1,7 +1,6 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-
-from app.models import User
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt
+from app.models import User, RevokedTokenModel
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -49,5 +48,21 @@ def login():
         return jsonify({'message': 'Invalid credentials'}), 401
     
     access_token = create_access_token(identity=user.id)
+    user_data= {
+        "id": user.id,
+        "email": user.email,
+        "first_name": user.first_name,
+        "last_name": user.last_name,
+        "dob": user.dob
+    }
 
-    return jsonify({'access_token': access_token}), 200
+    return jsonify({'access_token': access_token, 'user': user_data}), 200
+
+
+@auth_bp.route('/logout', methods=['POST'])
+@jwt_required()
+def logout():
+    jti = get_jwt()['jti']
+    revoked_token = RevokedTokenModel(jti=jti)
+    revoked_token.add()
+    return jsonify({'message': 'Access token has been revoked'}), 200

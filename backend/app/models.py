@@ -46,16 +46,12 @@ class User(db.Model):
             user_id = ''.join(secrets.choice('0123456789') for _ in range(8))
             if not User.get_by_user_id(user_id):
                 return user_id
-
-
             
     def save(self):
         if not self.user_id:
             self.user_id = self.generate_user_id()
         db.session.add(self)
         db.session.commit()
-
-
 
 
 class Role(db.Model):
@@ -65,6 +61,7 @@ class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True)
     users = db.relationship('User', backref='role', lazy='dynamic')
+
 
 class Message(db.Model):
     
@@ -81,3 +78,18 @@ class Message(db.Model):
 
     def __repr__(self):
         return f'<Message {self.id} from {self.sender_id}>'
+    
+
+class RevokedTokenModel(db.Model):
+    __tablename__ = 'revoked_tokens'
+    id = db.Column(db.Integer, primary_key=True)
+    jti = db.Column(db.String(120), unique=True)
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def is_jti_blacklisted(cls, jti):
+        query = cls.query.filter_by(jti=jti).first()
+        return bool(query)

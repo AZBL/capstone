@@ -1,5 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router";
+import { useAuth } from "../contexts/AuthContext";
 
 const SignUp = () => {
   const [firstName, setFirstName] = useState("");
@@ -8,6 +10,8 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [dob, setDob] = useState("");
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -20,9 +24,10 @@ const SignUp = () => {
         password: password,
         dob: dob,
       });
+      login({ user: response.data.user, token: response.data.access_token });
       // remove line below after dev
       console.log("Registration successful:", response.data);
-      //add navigate to profile page
+      // navigate("/profile"); ADD THIS
     } catch (err) {
       setError("Registration failed.");
       console.error("Registration error:", err);

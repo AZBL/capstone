@@ -3,10 +3,11 @@ from flask import Flask, jsonify
 from config import config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from .models import db
+from .models import db, RevokedTokenModel
 from .routes.auth import auth_bp
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
+import uuid
 
 jwt = JWTManager()
 
@@ -21,6 +22,16 @@ def create_app(config_name=None):
     app.config.from_object(config[config_name])
 
     jwt.init_app(app)
+
+    @jwt.token_in_blocklist_loader
+    def check_if_token_in_blacklist(jwt_header, jwt_payload):
+        jti = jwt_payload["jti"]
+        return RevokedTokenModel.is_jti_blacklisted(jti)
+
+    @jwt.additional_claims_loader
+    def add_claims_to_jwt(identity):
+        return {'jti': str(uuid.uuid4())}
+
 
     CORS(app)
 

@@ -24,10 +24,11 @@ const SignUp = () => {
         password: password,
         dob: dob,
       });
-      login({ user: response.data.user, token: response.data.access_token });
-      // remove line below after dev
       console.log("Registration successful:", response.data);
-      // navigate("/profile"); ADD THIS
+      const user = response.data.user;
+      const token = response.data.access_token;
+      login(token, user);
+      navigate("/profile");
     } catch (err) {
       setError("Registration failed.");
       console.error("Registration error:", err);

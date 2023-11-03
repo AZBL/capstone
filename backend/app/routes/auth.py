@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt
-from app.models import User, RevokedTokenModel
+from app.models import User, RevokedTokenModel, db
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -17,20 +17,32 @@ def register():
     dob = data.get('dob')
 
     # perform form validation
-
-    new_user = User(
-        first_name=first_name,
-        last_name=last_name,
-        email=email,
-        password=password,
-        dob=dob,
-        role_id=1
-    )
-
     try:
+        new_user = User(
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=password,
+            dob=dob,
+            role_id=1
+        )
+        
         new_user.save()
-        return jsonify({'message': "New user registered"}), 201
+
+        access_token = create_access_token(identity=new_user.id)
+        user_data = {
+            "id": new_user.user_id,
+            "email": new_user.email,
+            "first_name": new_user.first_name,
+            "last_name": new_user.last_name,
+            "dob": new_user.dob.strftime('%Y-%m-%d') 
+        }
+
+        return jsonify({'access_token': access_token, 'user': user_data}), 201
+
+
     except Exception as e:
+        db.session.rollback()
         return jsonify({"error": str(e)}), 400
     
 
@@ -49,11 +61,11 @@ def login():
     
     access_token = create_access_token(identity=user.id)
     user_data= {
-        "id": user.id,
+        "id": user.user_id,
         "email": user.email,
         "first_name": user.first_name,
         "last_name": user.last_name,
-        "dob": user.dob
+        "dob": user.dob.strftime('%Y-%m-%d') 
     }
 
     return jsonify({'access_token': access_token, 'user': user_data}), 200

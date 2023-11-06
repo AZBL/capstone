@@ -5,6 +5,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from .models import db, RevokedTokenModel
 from .routes.auth import auth_bp
+from .routes.messages import messages_bp
+from .routes.users import users_bp
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 import uuid
@@ -35,7 +37,9 @@ def create_app(config_name=None):
 
     CORS(app)
 
-    app.register_blueprint(auth_bp, url_prefix='/auth')
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(messages_bp)
+    app.register_blueprint(users_bp)
 
     db.init_app(app)
     migrate = Migrate(app, db)

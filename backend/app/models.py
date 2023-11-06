@@ -58,10 +58,13 @@ class Role(db.Model):
     
     __tablename__ = 'roles'
 
+    PATIENT_ID = 1
+    ADMIN_ID = 2
+    STAFF_ID = 3
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True)
     users = db.relationship('User', backref='role', lazy='dynamic')
-
 
 class Message(db.Model):
     
@@ -69,11 +72,15 @@ class Message(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     sender_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    subject = db.Column(db.String(255), nullable=False)
+    recipient_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     content = db.Column(db.Text, nullable=False)
     timestamp = db.Column(
         db.DateTime, nullable=False, default=datetime.utcnow)
     parent_message_id = db.Column(db.Integer, db.ForeignKey('messages.id'))
+    is_read = db.Column(db.Boolean, default=False)
     sender = db.relationship('User', foreign_keys=[sender_id], backref='sent_messages')
+    recipient = db.relationship('User', foreign_keys=[recipient_id], backref='received_messages')
     replies = db.relationship('Message', backref=db.backref('parent_message', remote_side=[id]))
 
     def __repr__(self):

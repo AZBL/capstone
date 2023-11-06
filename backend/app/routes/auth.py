@@ -1,8 +1,8 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt
-from app.models import User, RevokedTokenModel, db
+from app.models import User, Role, RevokedTokenModel, db
 
-auth_bp = Blueprint('auth', __name__)
+auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 @auth_bp.route('/register', methods=['POST'])
 def register():
@@ -24,7 +24,7 @@ def register():
             email=email,
             password=password,
             dob=dob,
-            role_id=1
+            role_id=Role.PATIENT_ID
         )
         
         new_user.save()
@@ -60,6 +60,7 @@ def login():
         return jsonify({'message': 'Invalid credentials'}), 401
     
     access_token = create_access_token(identity=user.id)
+
     user_data= {
         "id": user.user_id,
         "email": user.email,

@@ -1,10 +1,33 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [token, setToken] = useState(null);
+
+  const login = (token, userData) => {
+    const decoded = jwtDecode(token);
+    const tokenExpiry = decoded.exp * 1000; // convert to milliseconds
+
+    setToken(token);
+    setCurrentUser(userData);
+
+    console.log("Token expires at:" + tokenExpiry);
+
+    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("token", token);
+    localStorage.setItem("tokenExpiry", tokenExpiry);
+  };
+
+  const logout = () => {
+    setToken(null);
+    setCurrentUser(null);
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    localStorage.removeItem("tokenExpiry");
+  };
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -15,21 +38,27 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const login = (token, userData) => {
-    setToken(token);
-    setCurrentUser(userData);
+  useEffect(() => {
+    const handleAutoLogout = () => {
+      const tokenExpiry = localStorage.getItem("tokenExpiry");
+      if (tokenExpiry) {
+        const currentTime = Date.now();
+        const remainingTime = tokenExpiry - currentTime;
 
-    localStorage.setItem("user", JSON.stringify(userData));
-    localStorage.setItem("token", token);
-  };
+        if (remainingTime <= 0) {
+          logout();
+        } else {
+          const timerId = setTimeout(logout, remainingTime);
+          return () => clearTimeout(timerId);
+        }
+      }
+    };
 
-  const logout = () => {
-    setToken(null);
-    setCurrentUser(null);
+    handleAutoLogout();
+    const intervalId = setInterval(handleAutoLogout, 60000);
 
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-  };
+    return () => clearInterval(intervalId);
+  }, [logout]);
 
   return (
     <AuthContext.Provider value={{ currentUser, token, login, logout }}>

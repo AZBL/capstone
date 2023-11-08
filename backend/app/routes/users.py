@@ -1,9 +1,8 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
 from app.models import User, Role
-from .helpers import get_current_user
+from ..helpers import get_current_user
 from sqlalchemy import or_
-
 
 users_bp = Blueprint('users_bp', __name__, url_prefix='/users')
 

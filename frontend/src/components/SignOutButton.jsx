@@ -4,8 +4,6 @@ import { useAuth } from "../contexts/AuthContext";
 const SignOutButton = () => {
   const { logout, token } = useAuth();
 
-  console.log("Token from context:", token); // Log token for debugging
-
   const handleSignOut = async () => {
     if (!token) {
       console.error("No token found, user is not logged in");

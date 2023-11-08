@@ -27,6 +27,7 @@ def get_message(message_id):
 def send_message():
     current_user_id = get_jwt_identity()
     data = request.get_json()
+    
     recipient_id = data.get('recipient_id')
     subject = data.get('subject')
     content = data.get('content')

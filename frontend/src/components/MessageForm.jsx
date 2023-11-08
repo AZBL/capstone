@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import UserSearch from "./UserSearch";
 
 const MessageForm = ({ parentMessageId }) => {
-  const [recipient, setRecipient] = useState("");
+  const [recipient, setRecipient] = useState(null);  //change back to empty string?
   const [subject, setSubject] = useState("");
   const [content, setContent] = useState("");
   const navigate = useNavigate();
@@ -18,8 +18,12 @@ const MessageForm = ({ parentMessageId }) => {
     }
   }, [currentUser, navigate]);
 
+  console.log("Recipient ID:", recipient);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    console.log("Recipient before submit:", recipient);
 
     // switch from simple alert to something else?
     if (!recipient) {
@@ -45,7 +49,7 @@ const MessageForm = ({ parentMessageId }) => {
 
       console.log(response.data);
 
-      setRecipient("");
+      setRecipient(null); //change back to setting to empty string??
       setSubject("");
       setContent("");
       navigate("/messages");
@@ -57,13 +61,6 @@ const MessageForm = ({ parentMessageId }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      {/* <input
-        type="text"
-        value={recipient}
-        onChange={(e) => setRecipient(e.target.value)}
-        placeholder="Recipient ID"
-        required
-      /> */}
       <UserSearch setRecipient={setRecipient} />
       <input
         type="text"

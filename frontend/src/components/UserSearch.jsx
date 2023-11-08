@@ -41,7 +41,8 @@ const UserSearch = ({ setRecipient }) => {
       open={open}
       onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}
-      isOptionEqualToValue={(option, value) => option.user_id === value.user_id}
+      // isOptionEqualToValue={(option, value) => option.user_id === value.user_id}
+      isOptionEqualToValue={(option, value) => option.id === value.id}
       getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
       options={options}
       loading={open && options.length === 0}
@@ -49,7 +50,12 @@ const UserSearch = ({ setRecipient }) => {
         setSearchTerm(newInputValue);
       }}
       onChange={(event, newValue) => {
-        setRecipient(newValue ? newValue.user_id : null);
+        console.log("Selected user:", newValue);
+        console.log("Selected user ID:", newValue.id);
+
+        setRecipient(newValue ? Number(newValue.id) : null);
+
+        // setRecipient(newValue ? newValue.id : null);
       }}
       renderInput={(params) => (
         <TextField

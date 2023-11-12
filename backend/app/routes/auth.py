@@ -31,7 +31,8 @@ def register():
 
         access_token = create_access_token(identity=new_user.id)
         user_data = {
-            "id": new_user.user_id,
+            "id": new_user.id,
+            "user_id": new_user.user_id,
             "email": new_user.email,
             "first_name": new_user.first_name,
             "last_name": new_user.last_name,
@@ -62,7 +63,8 @@ def login():
     access_token = create_access_token(identity=user.id)
 
     user_data= {
-        "id": user.user_id,
+        "id": user.id,
+        "user_id": user.user_id,
         "email": user.email,
         "first_name": user.first_name,
         "last_name": user.last_name,

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
 import { TextField } from "@mui/material";
 import { Autocomplete } from "@mui/material";
+import { formatDate } from "../utils/formatDate";
 
 const UserSearch = ({ setRecipient }) => {
   const [open, setOpen] = useState(false);
@@ -25,7 +26,7 @@ const UserSearch = ({ setRecipient }) => {
             setOptions(response.data);
           }
         } catch (error) {
-          console.error("Error fetching users:", error);
+          console.error("Error getting users:", error);
         }
       }, 500);
       return () => {
@@ -41,9 +42,12 @@ const UserSearch = ({ setRecipient }) => {
       open={open}
       onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}
-      // isOptionEqualToValue={(option, value) => option.user_id === value.user_id}
       isOptionEqualToValue={(option, value) => option.id === value.id}
-      getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
+      getOptionLabel={(option) =>
+        `Name: ${option.first_name} ${option.last_name} DOB: ${formatDate(
+          option.dob
+        )}, User ID: ${option.user_id}`
+      }
       options={options}
       loading={open && options.length === 0}
       onInputChange={(event, newInputValue) => {

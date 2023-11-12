@@ -6,24 +6,25 @@ import { useEffect } from "react";
 import UserSearch from "./UserSearch";
 
 const MessageForm = ({ parentMessageId }) => {
-  const [recipient, setRecipient] = useState(null);  //change back to empty string?
+  const [recipient, setRecipient] = useState(null); //change back to empty string?
   const [subject, setSubject] = useState("");
   const [content, setContent] = useState("");
   const navigate = useNavigate();
-  const { currentUser, token } = useAuth();
+  const { currentUser, token, logout } = useAuth();
 
   useEffect(() => {
     if (!currentUser) {
+      logout();
       navigate("/signin");
     }
   }, [currentUser, navigate]);
 
-  console.log("Recipient ID:", recipient);
+  // console.log("Recipient ID:", recipient);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("Recipient before submit:", recipient);
+    // console.log("Recipient before submit:", recipient);
 
     // switch from simple alert to something else?
     if (!recipient) {
@@ -33,7 +34,7 @@ const MessageForm = ({ parentMessageId }) => {
 
     try {
       const response = await axios.post(
-        "/messages/send_message",
+        "api/messages/send_message",
         {
           recipient_id: recipient,
           subject,

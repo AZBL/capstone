@@ -14,8 +14,6 @@ export const AuthProvider = ({ children }) => {
     setToken(token);
     setCurrentUser(userData);
 
-    console.log("Token expires at:" + tokenExpiry);
-
     localStorage.setItem("user", JSON.stringify(userData));
     localStorage.setItem("token", token);
     localStorage.setItem("tokenExpiry", tokenExpiry);

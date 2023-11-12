@@ -4,14 +4,31 @@ from flask import Blueprint, request, jsonify
 from datetime import datetime
 
 
-messages_bp = Blueprint('messages', __name__, url_prefix='/messages')
+messages_bp = Blueprint('messages', __name__, url_prefix='/api/messages')
 
-@messages_bp.route('/', methods=['GET'])
+@messages_bp.route('/display', methods=['GET'])
 @jwt_required()
 def get_messages():
     current_user_id = get_jwt_identity()
     messages = Message.query.filter_by(recipient_id=current_user_id).all()
-    return jsonify([message.to_dict() for message in messages]), 200
+
+    messages_data = []
+
+    for message in messages:
+        message_data = {
+            'id': message.id,
+            'subject': message.subject,
+            'timestamp': message.timestamp.strftime('%Y-%m-%d'),
+            'is_read': message.is_read,
+            # 'content': message.content,
+            'sender_id': message.sender.id,
+            'sender_first_name': message.sender.first_name,
+            'sender_last_name': message.sender.last_name
+        }
+        messages_data.append(message_data)
+
+
+    return jsonify(messages_data), 200
 
 @messages_bp.route('/<int:message_id>', methods=['GET'])
 @jwt_required()
@@ -20,7 +37,15 @@ def get_message(message_id):
     message = Message.query.filter_by(id=message_id, recipient_id=current_user_id).first()
     if not message:
         return jsonify({"message": "Message not found or access denied"}), 404
-    return jsonify(message.to_dict()), 200
+    return jsonify({
+            'id': message.id,
+            'subject': message.subject,
+            'content': message.content,
+            'timestamp': message.timestamp.strftime('%Y-%m-%d'),
+            'sender_id': message.sender.id,
+            'sender_first_name': message.sender.first_name,
+            'sender_last_name': message.sender.last_name
+        }), 200
 
 @messages_bp.route('/send_message', methods=['POST'])
 @jwt_required()

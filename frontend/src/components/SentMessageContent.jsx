@@ -6,7 +6,7 @@ import { formatDate } from "../utils/formatDate";
 import { useNavigate } from "react-router";
 import DeleteMessageButton from "./DeleteMessageButton";
 
-const MessageContent = () => {
+const SentMessageContent = () => {
   const [message, setMessage] = useState({});
   const { token, currentUser, logout } = useAuth();
   const { messageId } = useParams();
@@ -22,7 +22,7 @@ const MessageContent = () => {
   useEffect(() => {
     const fetchMessage = async () => {
       try {
-        const response = await axios.get(`/api/messages/${messageId}`, {
+        const response = await axios.get(`/api/messages/sent/${messageId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -36,7 +36,7 @@ const MessageContent = () => {
   }, [messageId, token]);
 
   const handleDelete = () => {
-    navigate("/messages");
+    navigate("/sent-messages");
   };
 
   return (
@@ -44,14 +44,10 @@ const MessageContent = () => {
       <div className="messageContainer">
         <h3>{message.subject}</h3>
         <p>
-          From: {message.sender_first_name} {message.sender_last_name}
+          To: {message.recipient_first_name} {message.recipient_last_name}
         </p>
-        <p>Message Received: {formatDate(message.timestamp)}</p>
-        {/* <p>Sent: {formatDate(message.timeStamp)}</p> */}
+        <p>Message Sent: {formatDate(message.timestamp)}</p>
         <p>Message Content: {message.content}</p>
-      </div>
-      <div>
-        Add link to Send Reply; clicking should open text box (reply component)
       </div>
       <DeleteMessageButton
         messageId={messageId}
@@ -60,4 +56,4 @@ const MessageContent = () => {
     </>
   );
 };
-export default MessageContent;
+export default SentMessageContent;

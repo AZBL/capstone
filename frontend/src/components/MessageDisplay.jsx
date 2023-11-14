@@ -1,31 +1,8 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import { formatDate } from "../utils/formatDate";
+import DeleteMessageButton from "./DeleteMessageButton";
 
-const MessageDisplay = () => {
-  const [messages, setMessages] = useState([]);
-  const { token } = useAuth();
-
-  useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        console.log("token: " + token);
-        const response = await axios.get("/api/messages/display", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setMessages(response.data);
-      } catch (error) {
-        console.error("Error getting messages:", error);
-      }
-    };
-
-    fetchMessages();
-  }, [token]);
-
+const MessageDisplay = ({ messages, onDeleteMessage }) => {
   return (
     <div className="messageDisplayContainer">
       <h2>Inbox</h2>
@@ -35,9 +12,11 @@ const MessageDisplay = () => {
           <p>{message.sender_last_name}</p>
           <Link to={`/message/${message.id}`}>{message.subject}</Link>
           <p>{formatDate(message.timestamp)}</p>
-          {/* fix this */}
-          <p>{message.is_read}</p>
-          <p>Delete Message</p>
+
+          <DeleteMessageButton
+            messageId={message.id}
+            onMessageDeleted={() => onDeleteMessage(message.id)}
+          />
         </div>
       ))}
     </div>

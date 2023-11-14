@@ -17,11 +17,14 @@ const UserSearch = ({ setRecipient }) => {
     if (searchTerm && searchTerm.length > 1 && open) {
       const timeoutId = setTimeout(async () => {
         try {
-          const response = await axios.get(`/users/search?q=${searchTerm}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+          const response = await axios.get(
+            `/api/users/search?q=${searchTerm}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
           if (active) {
             setOptions(response.data);
           }

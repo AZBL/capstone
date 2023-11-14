@@ -4,7 +4,7 @@ from app.models import User, Role
 from ..helpers import get_current_user
 from sqlalchemy import or_
 
-users_bp = Blueprint('users_bp', __name__, url_prefix='/users')
+users_bp = Blueprint('users_bp', __name__, url_prefix='/api/users')
 
 @users_bp.route('/search', methods=['GET'])
 @jwt_required()

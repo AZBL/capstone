@@ -12,7 +12,7 @@ const SignOutButton = () => {
 
     try {
       const response = await axios.post(
-        "/auth/logout",
+        "/api/auth/logout",
         {},
         {
           headers: {

@@ -12,10 +12,9 @@ const Profile = () => {
           <div>
             <p>Email: {currentUser.email}</p>
             <p>First Name: {currentUser.first_name}</p>
-            <p>First Name: {currentUser.first_name}</p>
             <p>Last Name: {currentUser.last_name}</p>
             <p>Date of Birth: {formatDate(currentUser.dob)}</p>
-            <p>User ID: {currentUser.id}</p>
+            <p>User ID: {currentUser.user_id}</p>
           </div>
           <Link to="/messages">Go to Messages</Link>
         </>

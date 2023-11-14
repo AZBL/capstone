@@ -7,6 +7,8 @@ import NotFound from "./components/NotFound";
 import Messages from "./components/Messages";
 import MessageForm from "./components/MessageForm";
 import MessageContent from "./components/MessageContent";
+import SentMessages from "./components/SentMessages";
+import SentMessageContent from "./components/SentMessageContent";
 import { AuthProvider } from "./contexts/AuthContext";
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -23,8 +25,13 @@ function App() {
             <Route path="signup" element={<SignUp />} />
             <Route path="signin" element={<SignIn />} />
             <Route path="messages" element={<Messages />} />
+            <Route path="sent-messages" element={<SentMessages />} />
             <Route path="send-message" element={<MessageForm />} />
             <Route path="message/:messageId" element={<MessageContent />} />
+            <Route
+              path="sent-message/:messageId"
+              element={<SentMessageContent />}
+            />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

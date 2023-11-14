@@ -82,6 +82,9 @@ class Message(db.Model):
     sender = db.relationship('User', foreign_keys=[sender_id], backref='sent_messages')
     recipient = db.relationship('User', foreign_keys=[recipient_id], backref='received_messages')
     replies = db.relationship('Message', backref=db.backref('parent_message', remote_side=[id]))
+    is_deleted_by_recipient = db.Column(db.Boolean, default=False)
+    is_deleted_by_sender = db.Column(db.Boolean, default=False)
+
 
     def __repr__(self):
         return f'<Message {self.id} from {self.sender_id}>'

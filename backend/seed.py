@@ -92,9 +92,9 @@ def clear_role():
 
 
 if __name__ == "__main__":
-    # clear_messages()
-    clear_users()
+    clear_messages()
+    # clear_users()
     # clear_role()
 
     # seed_roles()
-    seed_users()
+    # seed_users()

@@ -1,11 +1,13 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [token, setToken] = useState(null);
+  const navigate = useNavigate();
 
   const login = (token, userData) => {
     const decoded = jwtDecode(token);
@@ -25,6 +27,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
     localStorage.removeItem("tokenExpiry");
+    navigate("/");
   };
 
   useEffect(() => {

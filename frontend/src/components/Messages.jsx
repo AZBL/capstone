@@ -6,6 +6,8 @@ import MessageDisplay from "./MessageDisplay";
 
 const Messages = () => {
   const [messages, setMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   const { currentUser, token, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -13,14 +15,14 @@ const Messages = () => {
     if (!currentUser) {
       logout();
       navigate("/signin");
-    } else {
+    } else if (!isLoading) {
       fetchMessages();
     }
   }, [currentUser, navigate]);
 
   const fetchMessages = async () => {
+    setIsLoading(true);
     try {
-      console.log("token: " + token);
       const response = await axios.get("/api/messages/display", {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -30,6 +32,7 @@ const Messages = () => {
     } catch (error) {
       console.error("Error getting messages:", error);
     }
+    setIsLoading(false);
   };
 
   const handleDeleteMessage = (messageId) => {

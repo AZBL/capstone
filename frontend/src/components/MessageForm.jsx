@@ -1,13 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { useAuth } from "../contexts/AuthContext";
-import { useEffect } from "react";
 import UserSearch from "./UserSearch";
 
-const MessageForm = ({ parentMessageId }) => {
-  const [recipient, setRecipient] = useState(null); //change back to empty string?
-  const [subject, setSubject] = useState("");
+const MessageForm = ({ parentMessage, initialSubject }) => {
+  const [recipient, setRecipient] = useState("");
+  const [subject, setSubject] = useState(initialSubject || "");
   const [content, setContent] = useState("");
   const navigate = useNavigate();
   const { currentUser, token, logout } = useAuth();
@@ -17,14 +16,15 @@ const MessageForm = ({ parentMessageId }) => {
       logout();
       navigate("/signin");
     }
-  }, [currentUser, navigate]);
 
-  // console.log("Recipient ID:", recipient);
+    if (parentMessage) {
+      setRecipient(parentMessage.sender_id);
+      setSubject(`Re: ${parentMessage.subject}`);
+    }
+  }, [currentUser, navigate, parentMessage]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // console.log("Recipient before submit:", recipient);
 
     // switch from simple alert to something else?
     if (!recipient) {
@@ -39,7 +39,7 @@ const MessageForm = ({ parentMessageId }) => {
           recipient_id: recipient,
           subject,
           content,
-          parent_message_id: parentMessageId,
+          parent_message_id: parentMessage ? parentMessage.id : null,
         },
         {
           headers: {
@@ -50,7 +50,7 @@ const MessageForm = ({ parentMessageId }) => {
 
       console.log(response.data);
 
-      setRecipient(null); //change back to setting to empty string??
+      setRecipient("");
       setSubject("");
       setContent("");
       navigate("/messages");
@@ -62,14 +62,21 @@ const MessageForm = ({ parentMessageId }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <UserSearch setRecipient={setRecipient} />
+      {parentMessage ? (
+        <p>
+          Replying to: {parentMessage.sender_first_name}{" "}
+          {parentMessage.sender_last_name}
+        </p>
+      ) : (
+        <UserSearch setRecipient={setRecipient} />
+      )}
       <input
         type="text"
         value={subject}
         onChange={(e) => setSubject(e.target.value)}
         placeholder="Subject"
         required
-      />{" "}
+      />
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}

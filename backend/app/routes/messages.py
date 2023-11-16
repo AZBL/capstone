@@ -18,7 +18,7 @@ def get_messages():
         message_data = {
             'id': message.id,
             'subject': message.subject,
-            'timestamp': message.timestamp.strftime('%Y-%m-%d'),
+            'timestamp': message.timestamp.strftime('%Y-%m-%d %H:%M'),
             'is_read': message.is_read,
             'sender_id': message.sender.id,
             'sender_first_name': message.sender.first_name,
@@ -39,7 +39,7 @@ def get_message(message_id):
             'id': message.id,
             'subject': message.subject,
             'content': message.content,
-            'timestamp': message.timestamp.strftime('%Y-%m-%d'),
+            'timestamp': message.timestamp.strftime('%Y-%m-%d %H:%M'),
             'sender_id': message.sender.id,
             'sender_first_name': message.sender.first_name,
             'sender_last_name': message.sender.last_name
@@ -57,7 +57,7 @@ def get_sent_messages():
         message_data = {
             'id': message.id,
             'subject': message.subject,
-            'timestamp': message.timestamp.strftime('%Y-%m-%d'),
+            'timestamp': message.timestamp.strftime('%Y-%m-%d %H:%M'),
             'is_read': message.is_read,
             'recipient_id': message.recipient.id,
             'recipient_first_name': message.recipient.first_name,
@@ -79,7 +79,7 @@ def get_sent_message(message_id):
             'id': message.id,
             'subject': message.subject,
             'content': message.content,
-            'timestamp': message.timestamp.strftime('%Y-%m-%d'),
+            'timestamp': message.timestamp.strftime('%Y-%m-%d %H:%M'),
             'recipient_id': message.recipient.id,
             'recipient_first_name': message.recipient.first_name,
             'recipient_last_name': message.recipient.last_name

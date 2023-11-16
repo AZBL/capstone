@@ -15,6 +15,7 @@ const NavBar = () => {
       ) : (
         <>
           <NavLink to="profile">Profile</NavLink>
+          <NavLink to="messages">Messages</NavLink>
           <SignOutButton />
         </>
       )}

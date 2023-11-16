@@ -5,6 +5,7 @@ import { useParams } from "react-router";
 import { formatDate } from "../utils/formatDate";
 import { useNavigate } from "react-router";
 import DeleteMessageButton from "./DeleteMessageButton";
+import MessageForm from "./MessageForm";
 
 const MessageContent = () => {
   const [message, setMessage] = useState({});
@@ -39,25 +40,31 @@ const MessageContent = () => {
     navigate("/messages");
   };
 
+  const isMessageLoaded = message && Object.keys(message).length > 0;
+
   return (
     <>
-      <div className="messageContainer">
-        <h3>{message.subject}</h3>
-        <p>
-          From: {message.sender_first_name} {message.sender_last_name}
-        </p>
-        <p>Message Received: {formatDate(message.timestamp)}</p>
-        {/* <p>Sent: {formatDate(message.timeStamp)}</p> */}
-        <p>Message Content: {message.content}</p>
-      </div>
-      <div>
-        Add link to Send Reply; clicking should open text box (reply component)
-      </div>
-      <DeleteMessageButton
-        messageId={messageId}
-        onMessageDeleted={handleDelete}
-      />
+      {isMessageLoaded ? (
+        <div className="messageContainer">
+          <h3>{message.subject}</h3>
+          <p>
+            From: {message.sender_first_name} {message.sender_last_name}
+          </p>
+          <p>Message Received: {formatDate(message.timestamp)}</p>
+          <p>Message Content: {message.content}</p>
+
+          <MessageForm parentMessage={message} />
+
+          <DeleteMessageButton
+            messageId={messageId}
+            onMessageDeleted={handleDelete}
+          />
+        </div>
+      ) : (
+        <div>Loading message...</div>
+      )}
     </>
   );
 };
+
 export default MessageContent;

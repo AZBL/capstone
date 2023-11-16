@@ -39,20 +39,26 @@ const SentMessageContent = () => {
     navigate("/sent-messages");
   };
 
+  const isMessageLoaded = message && Object.keys(message).length > 0;
+
   return (
     <>
-      <div className="messageContainer">
-        <h3>{message.subject}</h3>
-        <p>
-          To: {message.recipient_first_name} {message.recipient_last_name}
-        </p>
-        <p>Message Sent: {formatDate(message.timestamp)}</p>
-        <p>Message Content: {message.content}</p>
-      </div>
-      <DeleteMessageButton
-        messageId={messageId}
-        onMessageDeleted={handleDelete}
-      />
+      {isMessageLoaded ? (
+        <div className="messageContainer">
+          <h3>{message.subject}</h3>
+          <p>
+            To: {message.recipient_first_name} {message.recipient_last_name}
+          </p>
+          <p>Message Sent: {formatDate(message.timestamp)}</p>
+          <p>Message Content: {message.content}</p>
+          <DeleteMessageButton
+            messageId={messageId}
+            onMessageDeleted={handleDelete}
+          />
+        </div>
+      ) : (
+        <div>Loading message...</div>
+      )}
     </>
   );
 };

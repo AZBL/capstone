@@ -6,7 +6,6 @@ auth_bp = Blueprint('auth', __name__, url_prefix='/api/auth')
 
 @auth_bp.route('/register', methods=['POST'])
 def register():
-    print("Register endpoint hit")
     data = request.json 
     print("Data received:", data)
 

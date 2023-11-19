@@ -91,7 +91,9 @@ class Message(db.Model):
     
 
 class RevokedTokenModel(db.Model):
+
     __tablename__ = 'revoked_tokens'
+
     id = db.Column(db.Integer, primary_key=True)
     jti = db.Column(db.String(120), unique=True)
 
@@ -103,3 +105,54 @@ class RevokedTokenModel(db.Model):
     def is_jti_blacklisted(cls, jti):
         query = cls.query.filter_by(jti=jti).first()
         return bool(query)
+    
+
+class MedicalProblem(db.Model):
+    
+    __tablename__ = 'medical_problems'
+
+    id = db.Column(db.Integer, primary_key=True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    name = db.Column(db.String(300), nullable = False)
+    additional_notes = db.Column(db.Text)
+
+class Allergy(db.Model):
+
+    __tablename__ = 'allergies'
+
+    id = db.Column(db.Integer, primary_key = True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    allergen = db.Column(db.String(100), nullable=False)
+    reaction = db.Column(db.Text, nullable=False)
+    additional_notes = db.Column(db.Text)
+
+class Medication(db.Model):
+
+    __tablename__ = 'medications'
+
+    id = db.Column(db.Integer, primary_key = True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    name = db.Column(db.String(100), nullable=False)
+    dosage = db.Column(db.String(100))
+    frequency = db.Column(db.String(100))
+    additional_notes = db.Column(db.Text)
+
+class SurgicalHistory(db.Model):
+
+    __tablename__ = 'surgeries'
+
+    id = db.Column(db.Integer, primary_key = True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    surgery_type = db.Column(db.String(200), nullable=False)
+    year = db.Column(db.String(20), nullable=False)
+    additional_notes = db.Column(db.Text)
+
+class FamilyHistory(db.Model):
+    
+    __tablename__ = 'family_history'
+
+    id = db.Column(db.Integer, primary_key = True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    relation = db.Column(db.String(100), nullable=False)
+    medical_condition = db.Column(db.String(150), nullable=False)
+    additional_notes = db.Column(db.Text)

@@ -46,8 +46,8 @@ const Messages = () => {
   return (
     <>
       <h1>Messages</h1>
-      <Link to="/send-message">Compose New Message</Link>
-      <Link to="/sent-messages">View Sent Messages</Link>
+      <Link to="/profile/send-message">Compose New Message</Link>
+      <Link to="/profile/sent-messages">View Sent Messages</Link>
 
       <div>
         <MessageDisplay

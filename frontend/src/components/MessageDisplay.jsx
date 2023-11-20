@@ -12,7 +12,7 @@ const MessageDisplay = ({ messages, onDeleteMessage }) => {
           <div key={message.id}>
             <p>{message.sender_first_name}</p>
             <p>{message.sender_last_name}</p>
-            <Link to={`/message/${message.id}`}>{message.subject}</Link>
+            <Link to={`/profile/message/${message.id}`}>{message.subject}</Link>
             <p>{formatDate(message.timestamp)}</p>
 
             <DeleteMessageButton

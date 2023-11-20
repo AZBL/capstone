@@ -53,7 +53,7 @@ const MessageForm = ({ parentMessage, initialSubject }) => {
       setRecipient("");
       setSubject("");
       setContent("");
-      navigate("/messages");
+      navigate("/profile/messages");
       //   or show a success message?
     } catch (error) {
       console.error("Failed to send message:", error);

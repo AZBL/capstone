@@ -1,26 +1,26 @@
 import { useAuth } from "../contexts/AuthContext";
-import { formatDate } from "../utils/formatDate";
-import { Link } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Profile = () => {
-  const { currentUser } = useAuth();
+  const { currentUser, logout } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!currentUser) {
+      logout();
+      navigate("/signin");
+    }
+  }, [currentUser, navigate]);
 
   return (
     <div>
-      {currentUser ? (
-        <>
-          <div>
-            <p>Email: {currentUser.email}</p>
-            <p>First Name: {currentUser.first_name}</p>
-            <p>Last Name: {currentUser.last_name}</p>
-            <p>Date of Birth: {formatDate(currentUser.dob)}</p>
-            <p>User ID: {currentUser.user_id}</p>
-          </div>
-          <Link to="/messages">Go to Messages</Link>
-        </>
-      ) : (
-        <p>Please log in to view your profile</p>
-      )}
+      <h2>
+        Hi {currentUser.first_name} {currentUser.last_name}{" "}
+      </h2>
+      <Link to="/profile/messages">Go to Messages</Link>
+      <Link to="/profile/medical-history">Medical History</Link>
+      <Outlet />
     </div>
   );
 };

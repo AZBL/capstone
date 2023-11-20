@@ -185,7 +185,7 @@ def update_medication(medication_id):
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
 
-@medical_bp.route('/add-surgery', methods=['POST'])
+@medical_bp.route('/add-surgery', methods=['POST'], endpoint='add_surgery')
 @jwt_required
 def add_surgery():
     current_user_id = get_jwt_identity()
@@ -209,11 +209,10 @@ def add_surgery():
         db.session.rollback()
         return jsonify({'error': str(e)}), 400
 
-@medical_bp.route('/surgeries', methods=['GET'])
+@medical_bp.route('/surgeries', methods=['GET'], endpoint='surgeries')
 @jwt_required
 def get_surgeries():
     current_user_id = get_jwt_identity()
-
     try: 
         surgeries = SurgicalHistory.query.filter_by(patient_id=current_user_id).all()
         surgery_list = [{'id': surgery.id, 'surgery_type': surgery.surgery_type, 'year': surgery.year, 'additional_notes': surgery.additional_notes} for surgery in surgeries]
@@ -222,7 +221,7 @@ def get_surgeries():
         return jsonify({'error': str(e)}), 500
 
 
-@medical_bp.route('/update-surgery/<int:surgery_id>', methods=['PATCH'])
+@medical_bp.route('/update-surgery/<int:surgery_id>', methods=['PATCH'], endpoint='update_surgery')
 @jwt_required
 def update_surgery(surgery_id):
     current_user_id=get_jwt_identity()

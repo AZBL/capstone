@@ -37,7 +37,7 @@ const MessageContent = () => {
   }, [messageId, token]);
 
   const handleDelete = () => {
-    navigate("/messages");
+    navigate("/profile/messages");
   };
 
   const isMessageLoaded = message && Object.keys(message).length > 0;

@@ -44,7 +44,7 @@ const SentMessages = () => {
         <div key={sentMessage.id}>
           <p>{sentMessage.recipient_first_name}</p>
           <p>{sentMessage.recipient_last_name}</p>
-          <Link to={`/sent-message/${sentMessage.id}`}>
+          <Link to={`/profile/sent-message/${sentMessage.id}`}>
             {sentMessage.subject}
           </Link>
           <p>{formatDate(sentMessage.timestamp)}</p>

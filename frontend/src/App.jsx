@@ -20,7 +20,7 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <body>
+        <div>
           <NavBar />
 
           <main className="grid">
@@ -43,7 +43,7 @@ function App() {
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
-        </body>
+        </div>
       </AuthProvider>
     </Router>
   );

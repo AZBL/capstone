@@ -1,17 +1,15 @@
 import { useAuth } from "../../contexts/AuthContext";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
-import MedicalConditions from "./MedicalConditions";
-import Medications from "./Medications";
-import Allergies from "./Allergies";
-import SurgicalHistory from "./SurgicalHistory";
-import FamilyHistory from "./FamilyHistory";
+import MedicalConditions from "./medical_conditions/MedicalConditions";
+import Medications from "./medications/Medications";
+import Allergies from "./allergies/Allergies";
+import SurgicalHistory from "./surgical_history/SurgicalHistory";
+import FamilyHistory from "./family_history/FamilyHistory";
 
 const MedicalHistory = () => {
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
-
-  useEffect;
 
   useEffect(() => {
     if (!currentUser) {

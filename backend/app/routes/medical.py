@@ -4,9 +4,12 @@ from app.models import User, MedicalProblem, Allergy, Medication, SurgicalHistor
 
 medical_bp = Blueprint('medical', __name__, url_prefix='/api/medical')
 
-@medical_bp.route('/add-medical-problem', methods=['POST'])
+
+# MEDICAL CONDITIONS
+
+@medical_bp.route('/medical-condition', methods=['POST'])
 @jwt_required()
-def add_medical_problem():
+def add_medical_condition():
     current_user_id = get_jwt_identity()
     data = request.json
     print("Data received:", data)
@@ -15,54 +18,81 @@ def add_medical_problem():
     additional_notes = data.get('additional_notes')
 
     try: 
-        medical_problem = MedicalProblem (
+        medical_condition = MedicalProblem (
             patient_id=current_user_id,
             name=name,
             additional_notes=additional_notes
         )
-        db.session.add(medical_problem)
+        db.session.add(medical_condition)
         db.session.commit()
-        return jsonify({'message': 'Medical problem added successfully', "medical problem": medical_problem.name}), 201
+
+        return jsonify({
+            'message:': 'Medical condition added',
+            'medical_condition': {
+                'id': medical_condition.id,
+                'name': medical_condition.name,
+                'additional_notes': medical_condition.additional_notes
+            }
+        }), 201
     except Exception as e:
         db.session.rollback()
         return jsonify({'error:': str(e)}), 400
 
  
-@medical_bp.route('/medical-problems', methods=['GET'])
+@medical_bp.route('/medical-condition', methods=['GET'])
 @jwt_required()
-def get_medical_problems():
+def get_medical_conditions():
     current_user_id = get_jwt_identity()
 
     try: 
-        medical_problems = MedicalProblem.query.filter_by(patient_id=current_user_id).all()
-        problems_list = [{'id': mp.id, 'name': mp.name, 'additional_notes': mp.additional_notes} for mp in medical_problems]
+        medical_conditions = MedicalProblem.query.filter_by(patient_id=current_user_id).all()
+        conditions_list = [{'id': mc.id, 'name': mc.name, 'additional_notes': mc.additional_notes} for mc in medical_conditions]
         
-        return jsonify({'medical_problems': problems_list}), 200
+        return jsonify({'medical-condition': conditions_list}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@medical_bp.route('/update-medical-problem/<int:problem_id>', methods=['PATCH'])
+@medical_bp.route('/medical-condition/<int:id>', methods=['PATCH'])
 @jwt_required()
-def update_medical_problem(problem_id):
+def update_medical_condition(id):
     current_user_id = get_jwt_identity()
     data = request.json
 
     try:
-        medical_problem = MedicalProblem.query.filter_by(id=problem_id, patient_id=current_user_id).first()
+        medical_condition = MedicalProblem.query.filter_by(id=id, patient_id=current_user_id).first()
         
-        if not medical_problem:
-            return jsonify({'error': 'Medical problem not found or access denied'}), 404
+        if not medical_condition:
+            return jsonify({'error': 'Medical condition not found or access denied'}), 404
         
-        medical_problem.name = data.get('name', medical_problem.name)
-        medical_problem.additional_notes = data.get('additional_notes', medical_problem.additional_notes)
+        medical_condition.name = data.get('name', medical_condition.name)
+        medical_condition.additional_notes = data.get('additional_notes', medical_condition.additional_notes)
         
         db.session.commit()
-        return jsonify({'message': 'Medical problem updated successfully'}), 200
+        return jsonify({'message': 'Medical condition updated successfully'}), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
+    
+@medical_bp.route('/medical-condition/<int:id>', methods=['DELETE'])
+@jwt_required()
+def delete_medical_condition(id):
+    current_user_id = get_jwt_identity()
+    medical_condition = MedicalProblem.query.filter_by(
+        id=id, patient_id=current_user_id
+    ).first()
+    if not medical_condition:
+        return jsonify({"message": "Medical condition not found or access denied"}), 404
+    try:
+        db.session.delete(medical_condition)
+        db.session.commit()
+        return jsonify({"message": "Medical condition deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
 
-@medical_bp.route('/add-allergy', methods = ['POST'])
+# ALLERGIES
+
+@medical_bp.route('/allergy', methods = ['POST'])
 @jwt_required()
 def add_allergy():
     current_user_id = get_jwt_identity()
@@ -82,12 +112,21 @@ def add_allergy():
         )
         db.session.add(allergy)
         db.session.commit()
-        return jsonify({'message': 'Allergy added', 'allergy_id': allergy.id}), 201
+
+        return jsonify({
+            'message': 'Allergy added',
+            'allergy': {
+                'id': allergy.id,
+                'allergen': allergy.allergen,
+                'reaction': allergy.reaction,
+                'additional_notes': allergy.additional_notes
+            }
+        }), 201
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 400
     
-@medical_bp.route('/allergies', methods = ['GET'])
+@medical_bp.route('/allergy', methods = ['GET'])
 @jwt_required()
 def get_allergies():
     current_user_id = get_jwt_identity()
@@ -95,19 +134,19 @@ def get_allergies():
     try:
         allergies = Allergy.query.filter_by(patient_id=current_user_id).all()
         allergy_list = [{'id': allergy.id, 'allergen': allergy.allergen, 'reaction': allergy.reaction, 'additional_notes': allergy.additional_notes} for allergy in allergies]
-        return jsonify({'allergies': allergy_list}), 200
+        return jsonify({'allergy': allergy_list}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
 
-@medical_bp.route('/update-allergy/<int:allergy_id>', methods = ['PATCH'])
+@medical_bp.route('/allergy/<int:id>', methods = ['PATCH'])
 @jwt_required()
-def update_allergy(allergy_id):
+def update_allergy(id):
     current_user_id = get_jwt_identity()
     data = request.json
 
     try:
-        allergy = Allergy.query.filter_by(id=allergy_id, patient_id=current_user_id).first()
+        allergy = Allergy.query.filter_by(id=id, patient_id=current_user_id).first()
 
         if not allergy:
             return jsonify({'error': 'Allergy not found or access denied'}), 404
@@ -122,8 +161,29 @@ def update_allergy(allergy_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
-                  
-@medical_bp.route('/add-medication', methods=['POST'])
+    
+@medical_bp.route('/allergy/<int:id>', methods=['DELETE'])
+@jwt_required()
+def delete_allergy(id):
+    current_user_id = get_jwt_identity()
+    allergy = Allergy.query.filter_by(
+        id=id, patient_id=current_user_id
+    ).first()
+    if not allergy:
+        return jsonify({"message": "Allergy not found or access denied"}), 404
+    try:
+        db.session.delete(allergy)
+        db.session.commit()
+        return jsonify({"message": "Allergy deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+
+
+# MEDICATION ROUTES
+
+@medical_bp.route('/medication', methods=['POST'])
 @jwt_required()
 def add_medication():
     current_user_id = get_jwt_identity()
@@ -144,12 +204,21 @@ def add_medication():
         )
         db.session.add(medication)
         db.session.commit()
-        return jsonify({'message': 'Medication added', 'medication_id': medication.id}), 201
+        return jsonify({
+            'message': 'Medication added',
+            'medication': {
+                'id': medication.id,
+                'name': medication.name,
+                'dosage': medication.dosage,
+                'frequency': medication.frequency,
+                'additional_notes': medication.additional_notes
+            }
+        }), 201
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 400
 
-@medical_bp.route('/medications', methods=['GET'])
+@medical_bp.route('/medication', methods=['GET'])
 @jwt_required()
 def get_medications():
     current_user_id = get_jwt_identity()
@@ -157,18 +226,18 @@ def get_medications():
     try:
         medications = Medication.query.filter_by(patient_id=current_user_id).all()
         medication_list = [{'id': med.id, 'name': med.name, 'dosage': med.dosage, 'frequency': med.frequency, 'additional_notes': med.additional_notes} for med in medications]
-        return jsonify({'medications': medication_list}), 200
+        return jsonify({'medication': medication_list}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@medical_bp.route('/update-medication/<int:medication_id>', methods=['PATCH'])
+@medical_bp.route('/medication/<int:id>', methods=['PATCH'])
 @jwt_required()
-def update_medication(medication_id):
+def update_medication(id):
     current_user_id = get_jwt_identity()
     data = request.json
 
     try:
-        medication = Medication.query.filter_by(id=medication_id, patient_id=current_user_id).first()
+        medication = Medication.query.filter_by(id=id, patient_id=current_user_id).first()
 
         if not medication:
             return jsonify({'error': 'Medication not found or access denied'}), 404
@@ -184,9 +253,29 @@ def update_medication(medication_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
+    
 
-@medical_bp.route('/add-surgery', methods=['POST'], endpoint='add_surgery')
-@jwt_required
+@medical_bp.route('/medication/<int:id>', methods=['DELETE'])
+@jwt_required()
+def delete_medication(id):
+    current_user_id = get_jwt_identity()
+    medication = Medication.query.filter_by(
+        id=id, patient_id=current_user_id
+    ).first()
+    if not medication:
+        return jsonify({"message": "Medication not found or access denied"}), 404
+    try:
+        db.session.delete(medication)
+        db.session.commit()
+        return jsonify({"message": "Medication deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+# SURGERY ROUTES
+
+@medical_bp.route('/surgery', methods=['POST'], endpoint='add_surgery')
+@jwt_required()
 def add_surgery():
     current_user_id = get_jwt_identity()
     data = request.json
@@ -204,31 +293,40 @@ def add_surgery():
         )
         db.session.add(surgery)
         db.session.commit()
-        return jsonify({'message': 'Surgery added successfully', 'surgery_id': surgery.id}), 201
+
+        return jsonify({
+            'message': 'Surgery added',
+            'surgery': {
+                'id': surgery.id,
+                'surgery_type': surgery.surgery_type,
+                'year': surgery.year,
+                'additional_notes': surgery.additional_notes
+            }
+        })
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 400
 
-@medical_bp.route('/surgeries', methods=['GET'], endpoint='surgeries')
-@jwt_required
+@medical_bp.route('/surgery', methods=['GET'], endpoint='surgeries')
+@jwt_required()
 def get_surgeries():
     current_user_id = get_jwt_identity()
     try: 
         surgeries = SurgicalHistory.query.filter_by(patient_id=current_user_id).all()
         surgery_list = [{'id': surgery.id, 'surgery_type': surgery.surgery_type, 'year': surgery.year, 'additional_notes': surgery.additional_notes} for surgery in surgeries]
-        return jsonify({'surgeries': surgery_list}), 200
+        return jsonify({'surgery': surgery_list}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
 
-@medical_bp.route('/update-surgery/<int:surgery_id>', methods=['PATCH'], endpoint='update_surgery')
-@jwt_required
-def update_surgery(surgery_id):
+@medical_bp.route('/surgery/<int:id>', methods=['PATCH'], endpoint='update_surgery')
+@jwt_required()
+def update_surgery(id):
     current_user_id=get_jwt_identity()
     data = request.json
 
     try:
-        surgery = SurgicalHistory.query.filter_by(id=surgery_id, patient_id=current_user_id).first()
+        surgery = SurgicalHistory.query.filter_by(id=id, patient_id=current_user_id).first()
 
         if not surgery:
             return jsonify({'error': 'Surgery not found or access denied'}), 404
@@ -244,7 +342,26 @@ def update_surgery(surgery_id):
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
     
-@medical_bp.route('/add-family-history', methods=['POST'])
+@medical_bp.route('/surgery/<int:id>', methods=['DELETE'])
+@jwt_required()
+def delete_surgery(id):
+    current_user_id = get_jwt_identity()
+    surgery = SurgicalHistory.query.filter_by(
+        id=id, patient_id=current_user_id
+    ).first()
+    if not surgery:
+        return jsonify({"message": "Surgery not found or access denied"}), 404
+    try:
+        db.session.delete(surgery)
+        db.session.commit()
+        return jsonify({"message": "Surgery deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+# FAMILY HISTORY ROUTES
+
+@medical_bp.route('/family-history', methods=['POST'])
 @jwt_required()
 def add_family_history():
     current_user_id = get_jwt_identity()
@@ -263,12 +380,20 @@ def add_family_history():
         )
         db.session.add(family_history)
         db.session.commit()
-        return jsonify({'message': 'Family history added successfully', 'family_history_id': family_history.id}), 201
+        return jsonify({
+            'message': 'Family history added',
+            'family_history': {
+                'id': family_history.id,
+                'relation': family_history.relation,
+                'medical_condition': family_history.medical_condition,
+                'additional_notes': family_history.additional_notes
+            }
+        }), 201
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 400
 
-@medical_bp.route('/family-histories', methods=['GET'])
+@medical_bp.route('/family-history', methods=['GET'])
 @jwt_required()
 def get_family_histories():
     current_user_id = get_jwt_identity()
@@ -276,18 +401,18 @@ def get_family_histories():
     try:
         family_histories = FamilyHistory.query.filter_by(patient_id=current_user_id).all()
         history_list = [{'id': history.id, 'relation': history.relation, 'medical_condition': history.medical_condition, 'additional_notes': history.additional_notes} for history in family_histories]
-        return jsonify({'family_histories': history_list}), 200
+        return jsonify({'family-history': history_list}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@medical_bp.route('/update-family-history/<int:family_history_id>', methods=['PATCH'])
+@medical_bp.route('/family-history/<int:id>', methods=['PATCH'])
 @jwt_required()
-def update_family_history(family_history_id):
+def update_family_history(id):
     current_user_id = get_jwt_identity()
     data = request.json
 
     try:
-        family_history = FamilyHistory.query.filter_by(id=family_history_id, patient_id=current_user_id).first()
+        family_history = FamilyHistory.query.filter_by(id=id, patient_id=current_user_id).first()
 
         if not family_history:
             return jsonify({'error': 'Family history not found or access denied'}), 404
@@ -302,3 +427,20 @@ def update_family_history(family_history_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
+    
+@medical_bp.route('/family-history/<int:id>', methods=['DELETE'])
+@jwt_required()
+def delete_family_history(id):
+    current_user_id = get_jwt_identity()
+    family_history = FamilyHistory.query.filter_by(
+        id=id, patient_id=current_user_id
+    ).first()
+    if not family_history:
+        return jsonify({"message": "Family history not found or access denied"}), 404
+    try:
+        db.session.delete(family_history)
+        db.session.commit()
+        return jsonify({"message": "Family history deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500

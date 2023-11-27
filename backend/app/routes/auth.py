@@ -15,7 +15,6 @@ def register():
     password = data.get('password')
     dob = data.get('dob')
 
-    # perform form validation
     try:
         new_user = User(
             first_name=first_name,
@@ -67,7 +66,8 @@ def login():
         "email": user.email,
         "first_name": user.first_name,
         "last_name": user.last_name,
-        "dob": user.dob.strftime('%Y-%m-%d') 
+        "dob": user.dob.strftime('%Y-%m-%d'),
+        "role_id": user.role_id
     }
 
     return jsonify({'access_token': access_token, 'user': user_data}), 200

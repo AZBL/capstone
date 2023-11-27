@@ -19,6 +19,7 @@ const SignIn = () => {
         password: password,
       });
       const user = response.data.user;
+      console.log(user);
       const token = response.data.access_token;
       login(token, user);
       navigate("/profile");
@@ -34,7 +35,7 @@ const SignIn = () => {
   };
 
   return (
-    <form className="formContainer" onSubmit={handleSignIn}>
+    <form className="authFormContainer" onSubmit={handleSignIn}>
       <label htmlFor="email">Email</label>
       <input
         type="email"

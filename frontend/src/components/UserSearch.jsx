@@ -61,7 +61,7 @@ const UserSearch = ({ setRecipient }) => {
         console.log("Selected user ID:", newValue.id);
 
         // setRecipient(newValue ? Number(newValue.id) : null);
-
+        
         setRecipient(newValue ? newValue.id : null);
       }}
       renderInput={(params) => (

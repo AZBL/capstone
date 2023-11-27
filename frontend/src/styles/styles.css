@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
 
-/* Global */
+/* GLOBAL */
 
 body {
   margin: 0;
@@ -14,7 +14,19 @@ body {
   gap: 30px;
 }
 
-/* NavBar */
+button {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  outline: none;
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+/* NAVBAR */
 
 header {
   padding: 40px 20px;
@@ -53,6 +65,7 @@ nav > *:last-child {
 .dropdown-content {
   display: none;
   position: absolute;
+  font-size: 14px;
   background-color: gray;
   z-index: 1;
 }
@@ -70,4 +83,61 @@ nav > *:last-child {
 
 .dropdown:hover .dropdown-content {
   display: block;
+}
+
+/* PROFILE */
+
+.profileContainer {
+  margin-top: 40px;
+  grid-column: 2 / span 10;
+  text-align: center;
+}
+
+.patientProfileContainer {
+  max-width: 100%;
+  display: grid;
+}
+
+.profileLink {
+  padding: 10px 0;
+}
+
+/* SIGN UP AND SIGN IN */
+
+.authFormContainer {
+  grid-column: 2 / span 10;
+  display: grid;
+  margin-top: 40px;
+  padding: 20px 10px;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+}
+
+.authFormContainer label {
+  margin-bottom: 3px;
+}
+
+.authFormContainer input {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid gray;
+}
+
+.authFormContainer button {
+  background-color: aquamarine;
+  padding: 10px;
+  border: 1px solid gray;
+  margin-top: 5px;
+}
+
+@media (min-width: 740px) {
+  .authFormContainer {
+    grid-column: 3 / span 8;
+  }
+}
+
+@media (min-width: 900px) {
+  .authFormContainer {
+    grid-column: 4 / span 6;
+  }
 }

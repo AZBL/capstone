@@ -7,9 +7,9 @@ const EditSurgicalHistory = ({ record, onUpdate, onCancel }) => {
 
   useEffect(() => {
     if (record) {
-      setSurgery(record.surgery);
+      setSurgery(record.surgery_type);
       setYear(record.year);
-      setAdditionalNotes(record.additionalNotes);
+      setAdditionalNotes(record.additional_notes);
     }
   }, [record]);
 

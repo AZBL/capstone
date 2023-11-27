@@ -36,7 +36,7 @@ const SignUp = () => {
   };
 
   return (
-    <form className="formContainer" onSubmit={handleSignUp}>
+    <form className="authFormContainer" onSubmit={handleSignUp}>
       <label htmlFor="firstName">First Name</label>
       <input
         type="text"

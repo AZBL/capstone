@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = (token, userData) => {
     const decoded = jwtDecode(token);
-    const tokenExpiry = decoded.exp * 1000; // convert to milliseconds
+    const tokenExpiry = decoded.exp * 1000; 
 
     setToken(token);
     setCurrentUser(userData);

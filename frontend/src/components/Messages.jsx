@@ -44,18 +44,19 @@ const Messages = () => {
   };
 
   return (
-    <>
-      <h1>Messages</h1>
-      <Link to="/profile/send-message">Compose New Message</Link>
-      <Link to="/profile/sent-messages">View Sent Messages</Link>
-
-      <div>
+    <div className="messagesContainer">
+      <h3>{currentUser.first_name}'s Messages</h3>
+      <div className="composeSendContainer">
+        <Link to="/profile/send-message">Compose New Message</Link>
+        <Link to="/profile/sent-messages">View Sent Messages</Link>
+      </div>
+      <div className="messageDisplayContainer">
         <MessageDisplay
           messages={messages}
           onDeleteMessage={handleDeleteMessage}
         />
       </div>
-    </>
+    </div>
   );
 };
 export default Messages;

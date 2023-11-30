@@ -21,12 +21,18 @@ const Profile = () => {
           <h2>
             Hi {currentUser.first_name} {currentUser.last_name}
           </h2>
-          <Link to="/profile/messages" className="profileLink">
-            Messages
-          </Link>
-          <Link to="/profile/medical-history" className="profileLink">
-            Medical History
-          </Link>
+          <div className="profileLinks">
+            <Link to="/profile/messages" className="profileLink messagesLink">
+              Messages
+            </Link>
+            <Link
+              to="/profile/medical-history"
+              className="profileLink medicalHistoryLink"
+            >
+              Medical History
+            </Link>
+          </div>
+
           <Outlet />
         </div>
       ) : (

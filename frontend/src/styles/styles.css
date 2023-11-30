@@ -98,9 +98,21 @@ nav > *:last-child {
   display: grid;
 }
 
-.profileLink {
+.profileLinks {
   padding: 10px 0;
 }
+
+.profileLink {
+  margin-right: 10px;
+}
+
+/* .patientProfileContainer h2 {
+  grid-column: 1 / -1;
+}
+
+.profileLink {
+  grid-column: span 1;
+} */
 
 /* SIGN UP AND SIGN IN */
 
@@ -140,4 +152,60 @@ nav > *:last-child {
   .authFormContainer {
     grid-column: 4 / span 6;
   }
+}
+
+/* MESSAGES */
+.messagesContainer {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border: 1px solid black;
+}
+
+.messagesContainer h3 {
+  grid-column: 2 / span 3;
+}
+.composeSendContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  grid-column: 1 / span 1;
+  text-align: start;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  border-top: 1px solid black;
+  justify-content: center;
+}
+
+.messageDisplayContainer {
+  grid-column: 2 / span 4;
+}
+
+/* MESSAGE DISPLAY */
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+}
+
+.messageDisplayWrapper .gridHeader {
+  font-weight: bold;
+  padding: 8px;
+}
+
+.messageDisplayWrapper .gridCell {
+  padding: 8px;
+}
+
+.gridRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column: 1 / -1;
+  border-top: 1px solid black;
+  align-items: center;
+}
+
+deleteMessageButton:hover {
+  cursor: pointer;
 }

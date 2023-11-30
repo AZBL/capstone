@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
 import { useParams } from "react-router";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 const DeleteMessageButton = ({ messageId, onMessageDeleted }) => {
   const { token } = useAuth();
@@ -28,7 +30,11 @@ const DeleteMessageButton = ({ messageId, onMessageDeleted }) => {
     }
   };
 
-  return <button onClick={handleDelete}>Delete</button>;
+  return (
+    <button onClick={handleDelete}>
+      <FontAwesomeIcon icon={faTrashCan} />
+    </button>
+  );
 };
 
 export default DeleteMessageButton;

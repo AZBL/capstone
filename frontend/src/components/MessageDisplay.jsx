@@ -4,23 +4,37 @@ import DeleteMessageButton from "./DeleteMessageButton";
 
 const MessageDisplay = ({ messages, onDeleteMessage }) => {
   return (
-    <div className="messageDisplayContainer">
-      <h2>Inbox</h2>
-
+    <div className="messageDisplayWrapper">
       {messages && messages.length > 0 ? (
-        messages.map((message) => (
-          <div key={message.id}>
-            <p>{message.sender_first_name}</p>
-            <p>{message.sender_last_name}</p>
-            <Link to={`/profile/message/${message.id}`}>{message.subject}</Link>
-            <p>{formatDate(message.timestamp)}</p>
+        <div className="gridContainer">
+          <div className="gridHeader">From</div>
+          <div className="gridHeader">Subject</div>
+          <div className="gridHeader">Date</div>
+          <div className="gridHeader">Delete</div>
 
-            <DeleteMessageButton
-              messageId={message.id}
-              onMessageDeleted={() => onDeleteMessage(message.id)}
-            />
-          </div>
-        ))
+          {messages.map((message) => (
+            <div className="gridRow" key={message.id}>
+              <div className="gridCell">
+                <Link to={`/profile/message/${message.id}`}>
+                  {message.sender_first_name} {message.sender_last_name}
+                </Link>
+              </div>
+              <div className="gridCell">
+                <Link to={`/profile/message/${message.id}`}>
+                  {message.subject}
+                </Link>
+              </div>
+              <div className="gridCell">{formatDate(message.timestamp)}</div>
+              <div className="gridCell">
+                <DeleteMessageButton
+                  messageId={message.id}
+                  onMessageDeleted={() => onDeleteMessage(message.id)}
+                  className="deleteMessageButton"
+                />
+              </div>
+            </div>
+          ))}
+        </div>
       ) : (
         <h4>No Messages</h4>
       )}

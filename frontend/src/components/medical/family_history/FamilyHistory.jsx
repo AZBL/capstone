@@ -42,7 +42,7 @@ const FamilyHistory = () => {
   };
 
   return (
-    <div>
+    <div className="medInfoWrapper">
       <h3>Family History</h3>
       {isAdding ? (
         <AddFamilyHistory
@@ -63,15 +63,24 @@ const FamilyHistory = () => {
           ) : (
             <ul>
               {familyHistories.map((record) => (
-                <li key={record.id}>
+                <li className="medInfoList" key={record.id}>
                   <p>
                     {record.medical_condition} Relation: {record.relation}{" "}
                   </p>
-                  <p>{record.additional_notes}</p>
-                  <button onClick={() => handleEdit(record)}>Edit</button>
-                  <button onClick={() => handleDelete(record.id)}>
+                  <p>Additonal Notes: {record.additional_notes}</p>
+                  <button
+                    className="medInfoButton"
+                    onClick={() => handleEdit(record)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="medInfoButton"
+                    onClick={() => handleDelete(record.id)}
+                  >
                     Delete
                   </button>
+                  <hr />
                 </li>
               ))}
             </ul>

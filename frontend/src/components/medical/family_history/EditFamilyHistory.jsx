@@ -23,7 +23,7 @@ const EditFamilyHistory = ({ record, onUpdate, onCancel }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="medInfoForm" onSubmit={handleSubmit}>
       <input
         type="text"
         value={relation}
@@ -39,8 +39,10 @@ const EditFamilyHistory = ({ record, onUpdate, onCancel }) => {
         onChange={(e) => setAdditionalNotes(e.target.value)}
         placeholder="Additional Notes"
       />
-      <button type="submit">Update</button>
-      <button type="button" onClick={onCancel}>
+      <button className="medInfoButton" type="submit">
+        Update
+      </button>
+      <button className="medInfoButton" type="button" onClick={onCancel}>
         Cancel
       </button>
     </form>

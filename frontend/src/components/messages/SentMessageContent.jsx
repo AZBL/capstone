@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { useParams } from "react-router";
-import { formatDate } from "../utils/formatDate";
+import { formatDate } from "../../utils/formatDate";
 import { useNavigate } from "react-router";
 import DeleteMessageButton from "./DeleteMessageButton";
-import MessageForm from "./MessageForm";
 
-const MessageContent = () => {
+const SentMessageContent = () => {
   const [message, setMessage] = useState({});
   const { token, currentUser, logout } = useAuth();
   const { messageId } = useParams();
@@ -23,7 +22,7 @@ const MessageContent = () => {
   useEffect(() => {
     const fetchMessage = async () => {
       try {
-        const response = await axios.get(`/api/messages/${messageId}`, {
+        const response = await axios.get(`/api/messages/sent/${messageId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -37,7 +36,7 @@ const MessageContent = () => {
   }, [messageId, token]);
 
   const handleDelete = () => {
-    navigate("/profile/messages");
+    navigate("/profile/sent-messages");
   };
 
   const isMessageLoaded = message && Object.keys(message).length > 0;
@@ -45,20 +44,32 @@ const MessageContent = () => {
   return (
     <>
       {isMessageLoaded ? (
-        <div className="messageContainer">
-          <h3>{message.subject}</h3>
-          <p>
-            From: {message.sender_first_name} {message.sender_last_name}
+        <div className="messageContentContainer">
+          <p className="messageDetails">
+            <span>From:</span>
+            {message.recipient_first_name} {message.recipient_last_name}
           </p>
-          <p>Message Received: {formatDate(message.timestamp)}</p>
-          <p>Message Content: {message.content}</p>
+          <p className="messageDetails">
+            <span>Subject:</span>
+            {message.subject}
+          </p>
 
-          <MessageForm parentMessage={message} />
+          <p className="messageDetails">
+            <span>Received:</span>
+            {formatDate(message.timestamp)}
+          </p>
+          <p className="messageDetails">
+            <span>Delete:</span>
+            <DeleteMessageButton
+              messageId={messageId}
+              onMessageDeleted={handleDelete}
+            />
+          </p>
 
-          <DeleteMessageButton
-            messageId={messageId}
-            onMessageDeleted={handleDelete}
-          />
+          <p className="content">
+            <span>Message Content</span>
+            {message.content}
+          </p>
         </div>
       ) : (
         <div>Loading message...</div>
@@ -66,5 +77,4 @@ const MessageContent = () => {
     </>
   );
 };
-
-export default MessageContent;
+export default SentMessageContent;

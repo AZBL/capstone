@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router";
 
 const SignIn = () => {
@@ -35,26 +36,33 @@ const SignIn = () => {
   };
 
   return (
-    <form className="authFormContainer" onSubmit={handleSignIn}>
-      <label htmlFor="email">Email</label>
-      <input
-        type="email"
-        id="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <label htmlFor="password">Password</label>
-      <input
-        type="password"
-        id="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+    <div className="authContainer">
+      <h2>Sign In</h2>
 
-      {error && <p className="error">{error}</p>}
+      <div className="authMessage">
+        Don't have an account yet? <Link to="../signup">Sign Up </Link>
+      </div>
+      <form className="authFormContainer" onSubmit={handleSignIn}>
+        <label htmlFor="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <label htmlFor="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-      <button className="formButton">Sign In</button>
-    </form>
+        {error && <p className="error">{error}</p>}
+
+        <button className="formButton">Sign In</button>
+      </form>
+    </div>
   );
 };
 export default SignIn;

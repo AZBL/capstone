@@ -42,13 +42,10 @@ const Allergies = () => {
   };
 
   return (
-    <div>
+    <div className="medInfoWrapper">
       <h3>Allergies</h3>
       {isAdding ? (
-        <AddAllergies 
-          onAdd={handleAdd} 
-          onCancel={() => setIsAdding(false)} 
-        />
+        <AddAllergies onAdd={handleAdd} onCancel={() => setIsAdding(false)} />
       ) : isEditing && currentRecord ? (
         <EditAllergies
           record={currentRecord}
@@ -57,21 +54,32 @@ const Allergies = () => {
         />
       ) : (
         <>
-          <button onClick={() => setIsAdding(true)}>Add Allergy</button>
+          <button className="medInfoButton" onClick={() => setIsAdding(true)}>
+            Add Allergy
+          </button>
           {allergies.length === 0 ? (
             <p>No allergies listed</p>
           ) : (
             <ul>
               {allergies.map((allergy) => (
-                <li key={allergy.id}>
+                <li className="medInfoList" key={allergy.id}>
                   <p>
                     {allergy.allergen} Reaction: {allergy.reaction}
                   </p>
-                  <p>{allergy.additional_notes}</p>
-                  <button onClick={() => handleEdit(allergy)}>Edit</button>
-                  <button onClick={() => handleDelete(allergy.id)}>
+                  <p>Additonal Notes: {allergy.additional_notes}</p>
+                  <button
+                    className="medInfoButton"
+                    onClick={() => handleEdit(allergy)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="medInfoButton"
+                    onClick={() => handleDelete(allergy.id)}
+                  >
                     Delete
                   </button>
+                  <hr />
                 </li>
               ))}
             </ul>

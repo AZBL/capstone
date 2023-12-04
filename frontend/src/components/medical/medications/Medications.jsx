@@ -43,7 +43,7 @@ const Medications = () => {
   };
 
   return (
-    <div>
+    <div className="medInfoWrapper">
       <h3>Medications</h3>
       {isAdding ? (
         <AddMedication onAdd={handleAdd} onCancel={() => setIsAdding(false)} />
@@ -55,19 +55,32 @@ const Medications = () => {
         />
       ) : (
         <>
-          <button onClick={() => setIsAdding(true)}>Add medication</button>
+          <button className="medInfoButton" onClick={() => setIsAdding(true)}>
+            Add medication
+          </button>
           {medicationData.length === 0 ? (
             <p>No medications listed</p>
           ) : (
             <ul>
               {medicationData.map((med) => (
-                <li key={med.id}>
+                <li className="medInfoList" key={med.id}>
                   <p>{med.name}</p>
                   <p>{med.dosage}</p>
                   <p>{med.frequency}</p>
-                  <p>{med.additional_notes}</p>
-                  <button onClick={() => handleEdit(med)}>Edit</button>
-                  <button onClick={() => handleDelete(med.id)}>Delete</button>
+                  <p>Additonal Notes: {med.additional_notes}</p>
+                  <button
+                    className="medInfoButton"
+                    onClick={() => handleEdit(med)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="medInfoButton"
+                    onClick={() => handleDelete(med.id)}
+                  >
+                    Delete
+                  </button>
+                  <hr />
                 </li>
               ))}
             </ul>

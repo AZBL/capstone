@@ -22,17 +22,18 @@ const MedicalHistory = () => {
   return (
     <div>
       {currentUser.role_id === 1 ? (
-        <div>
-          <div>
+        <div className="medHistoryContainer">
+          <h3>{currentUser.first_name}'s Medical History</h3>
+          <div className="medInfoContainer">
             <MedicalConditions />
           </div>
-          <div>
+          <div className="medInfoContainer">
             <Medications />
           </div>
-          <div>
+          <div className="medInfoContainer">
             <Allergies />
           </div>
-          <div>
+          <div className="medInfoContainer">
             <SurgicalHistory />
           </div>
           {/* <div>
@@ -40,7 +41,7 @@ const MedicalHistory = () => {
       </div> */}
         </div>
       ) : (
-        <div> hi</div>
+        <div>Medical History Route</div>
       )}
     </div>
   );

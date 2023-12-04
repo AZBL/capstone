@@ -23,7 +23,7 @@ const EditAllergies = ({ record, onUpdate, onCancel }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="medInfoForm" onSubmit={handleSubmit}>
       <input
         type="text"
         value={allergen}
@@ -39,8 +39,10 @@ const EditAllergies = ({ record, onUpdate, onCancel }) => {
         onChange={(e) => setAdditionalNotes(e.target.value)}
         placeholder="Additional Notes"
       ></textarea>
-      <button type="submit">Update</button>
-      <button type="Button" onClick={onCancel}>
+      <button className="medInfoButton" type="submit">
+        Update
+      </button>
+      <button className="medInfoButton" type="Button" onClick={onCancel}>
         Cancel
       </button>
     </form>

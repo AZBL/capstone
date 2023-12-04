@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 const SignOutButton = () => {
   const { logout, token } = useAuth();

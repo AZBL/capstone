@@ -1,16 +1,19 @@
 import "./styles/styles.css";
 import NavBar from "./components/NavBar";
-import SignIn from "./components/SignIn";
-import SignUp from "./components/SignUp";
+import SignIn from "./components/auth/SignIn";
+import SignUp from "./components/auth/SignUp";
 import Home from "./components/Home";
 import Profile from "./components/Profile";
 import NotFound from "./components/NotFound";
-import Messages from "./components/Messages";
-import MessageForm from "./components/MessageForm";
-import MessageContent from "./components/MessageContent";
-import SentMessages from "./components/SentMessages";
-import SentMessageContent from "./components/SentMessageContent";
+import Messages from "./components/messages/Messages";
+import MessageForm from "./components/messages/MessageForm";
+import MessageContent from "./components/messages/MessageContent";
+import SentMessages from "./components/messages/SentMessages";
+import SentMessageContent from "./components/messages/SentMessageContent";
 import MedicalHistory from "./components/medical/MedicalHistory";
+import Footer from "./components/Footer";
+import Warning from "./components/Warning";
+import Staff from "./components/Staff";
 
 import { AuthProvider } from "./contexts/AuthContext";
 
@@ -20,8 +23,9 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <div>
+        <div className="mainContainer">
           <NavBar />
+          <Warning />
 
           <main className="grid">
             <Routes>
@@ -39,11 +43,13 @@ function App() {
               </Route>
               <Route path="signup" element={<SignUp />} />
               <Route path="signin" element={<SignIn />} />
+              <Route path="staff" element={<Staff />}></Route>
 
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
         </div>
+        <Footer />
       </AuthProvider>
     </Router>
   );

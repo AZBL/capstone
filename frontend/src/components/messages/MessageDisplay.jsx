@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { formatDate } from "../utils/formatDate";
+import { formatDate } from "../../utils/formatDate";
 import DeleteMessageButton from "./DeleteMessageButton";
 
 const MessageDisplay = ({ messages, onDeleteMessage }) => {
@@ -7,10 +7,10 @@ const MessageDisplay = ({ messages, onDeleteMessage }) => {
     <div className="messageDisplayWrapper">
       {messages && messages.length > 0 ? (
         <div className="gridContainer">
-          <div className="gridHeader">From</div>
-          <div className="gridHeader">Subject</div>
-          <div className="gridHeader">Date</div>
-          <div className="gridHeader">Delete</div>
+          <div className="gridHeader">From:</div>
+          <div className="gridHeader">Subject:</div>
+          <div className="gridHeader">Date:</div>
+          <div className="gridHeader">Delete:</div>
 
           {messages.map((message) => (
             <div className="gridRow" key={message.id}>

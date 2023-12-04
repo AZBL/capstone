@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
-import { useAuth } from "../contexts/AuthContext";
-import UserSearch from "./UserSearch";
+import { useAuth } from "../../contexts/AuthContext";
+import UserSearch from "../UserSearch";
 
 const MessageForm = ({ parentMessage, initialSubject }) => {
   const [recipient, setRecipient] = useState("");
@@ -26,7 +26,6 @@ const MessageForm = ({ parentMessage, initialSubject }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // switch from simple alert to something else?
     if (!recipient) {
       alert("Please select a recipient.");
       return;
@@ -61,7 +60,7 @@ const MessageForm = ({ parentMessage, initialSubject }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="messageFormContainer" onSubmit={handleSubmit}>
       {parentMessage ? (
         <p>
           Replying to: {parentMessage.sender_first_name}{" "}
@@ -83,7 +82,9 @@ const MessageForm = ({ parentMessage, initialSubject }) => {
         placeholder="Content"
         required
       />
-      <button type="submit">Send Message</button>
+      <button className="messageButton" type="submit">
+        Send Message
+      </button>
     </form>
   );
 };

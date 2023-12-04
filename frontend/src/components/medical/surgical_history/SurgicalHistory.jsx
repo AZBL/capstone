@@ -42,7 +42,7 @@ const SurgicalHistory = () => {
   };
 
   return (
-    <div>
+    <div className="medInfoWrapper">
       <h3>Surgical History</h3>
       {isAdding ? (
         <AddSurgicalHistory
@@ -57,7 +57,7 @@ const SurgicalHistory = () => {
         />
       ) : (
         <>
-          <button onClick={() => setIsAdding(true)}>
+          <button className="medInfoButton" onClick={() => setIsAdding(true)}>
             Add Surgical History
           </button>
           {surgeries.length === 0 ? (
@@ -65,14 +65,23 @@ const SurgicalHistory = () => {
           ) : (
             <ul>
               {surgeries.map((surgery) => (
-                <li key={surgery.id}>
+                <li className="medInfoList" key={surgery.id}>
                   <p>{surgery.surgery_type}</p>
                   <p>{surgery.year}</p>
-                  <p>{surgery.additional_notes}</p>
-                  <button onClick={() => handleEdit(surgery)}>Edit</button>
-                  <button onClick={() => handleDelete(surgery.id)}>
+                  <p>Additonal Notes: {surgery.additional_notes}</p>
+                  <button
+                    className="medInfoButton"
+                    onClick={() => handleEdit(surgery)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="medInfoButton"
+                    onClick={() => handleDelete(surgery.id)}
+                  >
                     Delete
                   </button>
+                  <hr />
                 </li>
               ))}
             </ul>

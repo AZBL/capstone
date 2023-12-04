@@ -41,6 +41,7 @@ const UserSearch = ({ setRecipient }) => {
 
   return (
     <Autocomplete
+      className="autoComplete"
       id="user-search"
       open={open}
       onOpen={() => setOpen(true)}
@@ -60,12 +61,11 @@ const UserSearch = ({ setRecipient }) => {
         console.log("Selected user:", newValue);
         console.log("Selected user ID:", newValue.id);
 
-        // setRecipient(newValue ? Number(newValue.id) : null);
-        
         setRecipient(newValue ? newValue.id : null);
       }}
       renderInput={(params) => (
         <TextField
+          className="userSearch"
           {...params}
           label="Search users"
           InputProps={{

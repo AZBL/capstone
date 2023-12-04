@@ -42,7 +42,7 @@ const MedicalConditions = () => {
   };
 
   return (
-    <div>
+    <div className="medInfoWrapper">
       <h3>Medical Conditions</h3>
       {isAdding ? (
         <AddMedicalCondition
@@ -57,7 +57,7 @@ const MedicalConditions = () => {
         />
       ) : (
         <>
-          <button onClick={() => setIsAdding(true)}>
+          <button className="medInfoButton" onClick={() => setIsAdding(true)}>
             Add Medical Condition
           </button>
           {medicalConditions.length === 0 ? (
@@ -65,15 +65,26 @@ const MedicalConditions = () => {
           ) : (
             <ul>
               {medicalConditions.map((medicalCondition) => (
-                <li key={medicalCondition.id}>
+                <li className="medInfoList" key={medicalCondition.id}>
                   <p>{medicalCondition.name}</p>
-                  <p>{medicalCondition.additional_notes}</p>
-                  <button onClick={() => handleEdit(medicalCondition)}>
+
+                  <p className="additionalNotes">
+                    Additonal Notes: {medicalCondition.additional_notes}
+                  </p>
+
+                  <button
+                    className="medInfoButton"
+                    onClick={() => handleEdit(medicalCondition)}
+                  >
                     Edit
                   </button>
-                  <button onClick={() => handleDelete(medicalCondition.id)}>
+                  <button
+                    className="medInfoButton"
+                    onClick={() => handleDelete(medicalCondition.id)}
+                  >
                     Delete
                   </button>
+                  <hr />
                 </li>
               ))}
             </ul>

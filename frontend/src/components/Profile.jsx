@@ -1,6 +1,7 @@
 import { useAuth } from "../contexts/AuthContext";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { formatDate } from "../utils/formatDate";
 import UserSearch from "./UserSearch";
 
 const Profile = () => {
@@ -21,6 +22,8 @@ const Profile = () => {
           <h2>
             Hi {currentUser.first_name} {currentUser.last_name}
           </h2>
+          <div>Date of Birth: {formatDate(currentUser.dob)}</div>
+          <div>Email: {currentUser.email}</div>
           <div className="profileLinks">
             <Link to="/profile/messages" className="profileLink messagesLink">
               Messages

@@ -20,7 +20,7 @@ const EditMedicalCondition = ({ onCancel, onUpdate, record }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="medInfoForm" onSubmit={handleSubmit}>
       <input
         type="text"
         value={name}
@@ -31,8 +31,10 @@ const EditMedicalCondition = ({ onCancel, onUpdate, record }) => {
         value={additionalNotes}
         onChange={(e) => setAdditionalNotes(e.target.value)}
       />
-      <button type="submit">Update</button>
-      <button type="button" onClick={onCancel}>
+      <button className="medInfoButton" type="submit">
+        Update
+      </button>
+      <button className="medInfoButton" type="button" onClick={onCancel}>
         Cancel
       </button>
     </form>

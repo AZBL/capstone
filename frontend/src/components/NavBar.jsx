@@ -17,7 +17,7 @@ const NavBar = () => {
         {!currentUser ? (
           <>
             <div className="dropdown">
-              <button className="drop-button">Patient Portal</button>
+              <button className="drop-button">User Portal</button>
               <div className="dropdown-content">
                 <NavLink to="signup">Sign Up</NavLink>
                 <NavLink to="signin">Sign In</NavLink>

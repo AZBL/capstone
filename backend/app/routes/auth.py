@@ -34,7 +34,8 @@ def register():
             "email": new_user.email,
             "first_name": new_user.first_name,
             "last_name": new_user.last_name,
-            "dob": new_user.dob.strftime('%Y-%m-%d') 
+            "dob": new_user.dob.strftime('%Y-%m-%d'),
+            "role_id": new_user.role_id 
         }
 
         return jsonify({'access_token': access_token, 'user': user_data}), 201

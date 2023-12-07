@@ -31,7 +31,7 @@ const DeleteMessageButton = ({ messageId, onMessageDeleted }) => {
   };
 
   return (
-    <button onClick={handleDelete}>
+    <button className="deleteMessageButton" onClick={handleDelete}>
       <FontAwesomeIcon icon={faTrashCan} />
     </button>
   );

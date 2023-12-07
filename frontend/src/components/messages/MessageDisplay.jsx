@@ -5,14 +5,14 @@ import DeleteMessageButton from "./DeleteMessageButton";
 const MessageDisplay = ({ messages, onDeleteMessage }) => {
   return (
     <div className="messageDisplayWrapper">
-      {messages && messages.length > 0 ? (
-        <div className="gridContainer">
-          <div className="gridHeader">From:</div>
-          <div className="gridHeader">Subject:</div>
-          <div className="gridHeader">Date:</div>
-          <div className="gridHeader">Delete:</div>
+      <div className="gridContainer">
+        <div className="gridHeader">From:</div>
+        <div className="gridHeader">Subject:</div>
+        <div className="gridHeader">Date:</div>
+        <div className="gridHeader">Delete:</div>
 
-          {messages.map((message) => (
+        {messages && messages.length > 0 ? (
+          messages.map((message) => (
             <div className="gridRow" key={message.id}>
               <div className="gridCell">
                 <Link to={`/profile/message/${message.id}`}>
@@ -29,15 +29,16 @@ const MessageDisplay = ({ messages, onDeleteMessage }) => {
                 <DeleteMessageButton
                   messageId={message.id}
                   onMessageDeleted={() => onDeleteMessage(message.id)}
-                  className="deleteMessageButton"
                 />
               </div>
             </div>
-          ))}
-        </div>
-      ) : (
-        <h4>No Messages</h4>
-      )}
+          ))
+        ) : (
+          <>
+            <h4 className="noMessages">No Messages</h4>
+          </>
+        )}
+      </div>
     </div>
   );
 };

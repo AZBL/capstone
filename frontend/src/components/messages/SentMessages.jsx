@@ -51,24 +51,31 @@ const SentMessages = () => {
           <div className="gridHeader">Subject:</div>
           <div className="gridHeader">Date:</div>
           <div className="gridHeader">Delete:</div>
-          {sentMessages.map((sentMessage) => (
-            <div className="gridRow" key={sentMessage.id}>
-              <Link to={`/profile/sent-message/${sentMessage.id}`}>
-                {sentMessage.recipient_first_name}
-                {sentMessage.recipient_last_name}
-              </Link>
 
-              <Link to={`/profile/sent-message/${sentMessage.id}`}>
-                {sentMessage.subject}
-              </Link>
-              <p>{formatDate(sentMessage.timestamp)}</p>
+          {sentMessages && sentMessages.length > 0 ? (
+            sentMessages.map((sentMessage) => (
+              <div className="gridRow" key={sentMessage.id}>
+                <Link to={`/profile/sent-message/${sentMessage.id}`}>
+                  {sentMessage.recipient_first_name}
+                  {sentMessage.recipient_last_name}
+                </Link>
 
-              <DeleteMessageButton
-                messageId={sentMessage.id}
-                onMessageDeleted={() => handleDeleteMessage(sentMessage.id)}
-              />
-            </div>
-          ))}
+                <Link to={`/profile/sent-message/${sentMessage.id}`}>
+                  {sentMessage.subject}
+                </Link>
+                <p>{formatDate(sentMessage.timestamp)}</p>
+
+                <DeleteMessageButton
+                  messageId={sentMessage.id}
+                  onMessageDeleted={() => handleDeleteMessage(sentMessage.id)}
+                />
+              </div>
+            ))
+          ) : (
+            <>
+              <h4 className="noMessages">No Sent Messages</h4>
+            </>
+          )}
         </div>
       </div>
     </div>

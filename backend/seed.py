@@ -35,7 +35,6 @@ def seed_users():
         {"first_name": "Jane", "last_name": "Jones", "email": "jane3@patient.com", "password": "password123", "dob": "1992-01-01", "role_id": 1},
         {"first_name": "Admin", "last_name": "User", "email": "admin@admin.com", "password": "admin123", "dob": "1990-01-01", "role_id": 2},
         {"first_name": "Staff", "last_name": "Member", "email": "staff@staff.com", "password": "staff123", "dob": "1990-02-01", "role_id": 3},
-        # {"first_name": "New", "last_name": "Patient", "email": "newpatient@patient.com", "password": "password123", "dob": "1995-01-01", "role_id": 1}
         {"first_name": "Adminy", "last_name": "Usery", "email": "admin2@admin.com", "password": "admin123", "dob": "1990-03-02", "role_id": 2},
         {"first_name": "Staffy", "last_name": "Membery", "email": "staff2@staff.com", "password": "staff123", "dob": "1990-04-02", "role_id": 3},
     ]

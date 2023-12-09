@@ -2,23 +2,25 @@ import { useAuth } from "../contexts/AuthContext";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { formatDate } from "../utils/formatDate";
-// import UserSearch from "./UserSearch";
 
 const Profile = () => {
-  // const [recipient, setRecipient] = useState("");
-  const { currentUser, logout } = useAuth();
+  const { currentUser, logout, isLoading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!currentUser) {
+    if (!isLoading && !currentUser) {
       logout();
       navigate("/signin");
     }
-  }, [currentUser, navigate]);
+  }, [currentUser, isLoading, navigate]);
+
+  if (!currentUser) {
+    return null;
+  }
 
   return (
     <div className="profileContainer">
-      {currentUser.role_id === 1 ? (
+      {currentUser?.role_id === 1 ? (
         <div className="patientProfileContainer">
           <h2>
             Hi {currentUser.first_name} {currentUser.last_name}
@@ -49,8 +51,6 @@ const Profile = () => {
           </Link>
 
           <Link to="/profile/patient-history">Patient Info</Link>
-          {/* <UserSearch setRecipient={setRecipient} />
-          {recipient && <p>Selected Recipient ID: {recipient}</p>} */}
           <Outlet />
         </div>
       )}

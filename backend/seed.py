@@ -1,3 +1,4 @@
+import os
 from app import create_app, db
 from app.models import User, Role, Message
 from sqlalchemy.sql import text
@@ -6,7 +7,7 @@ from datetime import datetime
 
 import random
 
-app = create_app('development')
+app = create_app(os.environ.get('FLASK_CONFIG', 'default'))
 app.app_context().push()
 
 def reset_sequence(session, table_name):
@@ -31,12 +32,12 @@ def seed_roles():
 
 def seed_users():
     users = [
-        {"first_name": "John", "last_name": "Doe", "email": "john3@patient.com", "password": "password123", "dob": "1990-01-01", "role_id": 1},
-        {"first_name": "Jane", "last_name": "Jones", "email": "jane3@patient.com", "password": "password123", "dob": "1992-01-01", "role_id": 1},
-        {"first_name": "Admin", "last_name": "User", "email": "admin@admin.com", "password": "admin123", "dob": "1990-01-01", "role_id": 2},
-        {"first_name": "Staff", "last_name": "Member", "email": "staff@staff.com", "password": "staff123", "dob": "1990-02-01", "role_id": 3},
-        {"first_name": "Adminy", "last_name": "Usery", "email": "admin2@admin.com", "password": "admin123", "dob": "1990-03-02", "role_id": 2},
-        {"first_name": "Staffy", "last_name": "Membery", "email": "staff2@staff.com", "password": "staff123", "dob": "1990-04-02", "role_id": 3},
+        {"first_name": "Admin", "last_name": "User", "email": "admin@primecare.com", "password": "admin123", "dob": "1990-01-01", "role_id": 2},
+        {"first_name": "Michael", "last_name": "Lee", "email": "michael.lee@primecare.com", "password": "michaellee", "dob": "1990-01-01", "role_id": 3},
+        {"first_name": "Emily", "last_name": "Johnson", "email": "emily.johnson@primecare.com", "password": "emilyjohnson", "dob": "1990-01-01", "role_id": 3},
+        {"first_name": "Tom", "last_name": "Rivera", "email": "tom.rivera@primecare.com", "password": "tomrivera", "dob": "1990-01-01", "role_id": 3},
+        {"first_name": "Natalie", "last_name": "Wang", "email": "natalie.wang@primecare.com", "password": "nataliewang", "dob": "1990-01-01", "role_id": 3},
+        {"first_name": "Samia", "last_name": "Wilson", "email": "samia.wilson@primecare.com", "password": "samiawilson", "dob": "1990-01-01", "role_id": 2},
     ]
 
     reset_sequence(db.session, 'users')
@@ -91,9 +92,9 @@ def clear_role():
 
 
 if __name__ == "__main__":
-    clear_messages()
-    # clear_users()
-    # clear_role()
+    # clear_messages()
+    clear_users()
+    clear_role()
 
-    # seed_roles()
-    # seed_users()
+    seed_roles()
+    seed_users()

@@ -3,21 +3,21 @@ import useMedicalData from "../../../hooks/useMedicalData";
 import AddAllergies from "./AddAllergies";
 import EditAllergies from "./EditAllergies";
 
-const Allergies = () => {
+const Allergies = ({ patientId }) => {
   const {
     data: allergies,
     fetchData,
     addData,
     updateData,
     deleteData,
-  } = useMedicalData("allergy");
+  } = useMedicalData("allergy", patientId);
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [{ patientId }]);
 
   const handleAdd = async (newRecord) => {
     await addData(newRecord);
@@ -63,9 +63,8 @@ const Allergies = () => {
             <ul>
               {allergies.map((allergy) => (
                 <li className="medInfoList" key={allergy.id}>
-                  <p>
-                    {allergy.allergen} Reaction: {allergy.reaction}
-                  </p>
+                  <p>{allergy.allergen}</p>
+                  <p>Reaction: {allergy.reaction}</p>
                   <p>Additonal Notes: {allergy.additional_notes}</p>
                   <button
                     className="medInfoButton"

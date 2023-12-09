@@ -5,7 +5,6 @@ import MedicalConditions from "./medical_conditions/MedicalConditions";
 import Medications from "./medications/Medications";
 import Allergies from "./allergies/Allergies";
 import SurgicalHistory from "./surgical_history/SurgicalHistory";
-// import FamilyHistory from "./family_history/FamilyHistory";
 
 const MedicalHistory = () => {
   const { currentUser, logout } = useAuth();
@@ -36,12 +35,9 @@ const MedicalHistory = () => {
           <div className="medInfoContainer">
             <SurgicalHistory />
           </div>
-          {/* <div>
-        <FamilyHistory />
-      </div> */}
         </div>
       ) : (
-        <div>Medical History Route</div>
+        <div>This area is for patient's only</div>
       )}
     </div>
   );

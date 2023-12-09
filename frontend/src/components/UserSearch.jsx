@@ -1,20 +1,21 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
-import { TextField } from "@mui/material";
-import { Autocomplete } from "@mui/material";
+import { TextField, Autocomplete } from "@mui/material";
 import { formatDate } from "../utils/formatDate";
 
-const UserSearch = ({ setRecipient }) => {
+const UserSearch = ({ onUserSelect }) => {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const { token } = useAuth();
 
   useEffect(() => {
     let active = true;
 
     if (searchTerm && searchTerm.length > 1 && open) {
+      setIsLoading(true);
       const timeoutId = setTimeout(async () => {
         try {
           const response = await axios.get(
@@ -27,17 +28,30 @@ const UserSearch = ({ setRecipient }) => {
           );
           if (active) {
             setOptions(response.data);
+            setIsLoading(false);
           }
         } catch (error) {
           console.error("Error getting users:", error);
+          setIsLoading(false);
         }
       }, 500);
       return () => {
         active = false;
         clearTimeout(timeoutId);
       };
+    } else {
+      setIsLoading(false);
     }
   }, [searchTerm, open, token]);
+
+  const noOptionsText = () => {
+    if (!isLoading && searchTerm.length > 1 && options.length === 0) {
+      return "No users found";
+    } else if (searchTerm.length === 0) {
+      return "Type to search";
+    }
+    return null;
+  };
 
   return (
     <Autocomplete
@@ -53,15 +67,15 @@ const UserSearch = ({ setRecipient }) => {
         )}, User ID: ${option.user_id}`
       }
       options={options}
-      loading={open && options.length === 0}
+      loading={isLoading}
+      noOptionsText={noOptionsText()}
       onInputChange={(event, newInputValue) => {
         setSearchTerm(newInputValue);
       }}
       onChange={(event, newValue) => {
         console.log("Selected user:", newValue);
-        console.log("Selected user ID:", newValue.id);
-
-        setRecipient(newValue ? newValue.id : null);
+        onUserSelect(newValue ? newValue.id : null);
+        console.log("Selected user:", newValue);
       }}
       renderInput={(params) => (
         <TextField
@@ -77,4 +91,5 @@ const UserSearch = ({ setRecipient }) => {
     />
   );
 };
+
 export default UserSearch;

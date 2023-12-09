@@ -28,11 +28,13 @@ const EditSurgicalHistory = ({ record, onUpdate, onCancel }) => {
         type="text"
         value={surgery}
         onChange={(e) => setSurgery(e.target.value)}
+        required
       />
       <input
         type="text"
         value={year}
         onChange={(e) => setYear(e.target.value)}
+        required
       />
       <textarea
         value={additionalNotes}

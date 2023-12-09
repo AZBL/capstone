@@ -3,21 +3,21 @@ import useMedicalData from "../../../hooks/useMedicalData";
 import AddFamilyHistory from "./AddFamilyHistory";
 import EditFamilyHistory from "./EditFamilyHistory";
 
-const FamilyHistory = () => {
+const FamilyHistory = ({ patientId }) => {
   const {
     data: familyHistories,
     fetchData,
     addData,
     updateData,
     deleteData,
-  } = useMedicalData("family-history");
+  } = useMedicalData("family-history", patientId);
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [{ patientId }]);
 
   const handleAdd = async (newRecord) => {
     await addData(newRecord);

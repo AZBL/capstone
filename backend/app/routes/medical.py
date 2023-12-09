@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from app.models import User, MedicalProblem, Allergy, Medication, SurgicalHistory, FamilyHistory, db
+from app.models import User, MedicalProblem, Allergy, Medication, Role, SurgicalHistory, FamilyHistory, db
 
 medical_bp = Blueprint('medical', __name__, url_prefix='/api/medical')
 
@@ -11,6 +11,12 @@ medical_bp = Blueprint('medical', __name__, url_prefix='/api/medical')
 @jwt_required()
 def add_medical_condition():
     current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    patient_id = None
+    if user.role_id in [Role.ADMIN_ID, Role.STAFF_ID]:
+        patient_id = request.args.get('patient_id')
+    target_user_id = patient_id if patient_id else current_user_id
+
     data = request.json
     print("Data received:", data)
 
@@ -19,7 +25,7 @@ def add_medical_condition():
 
     try: 
         medical_condition = MedicalProblem (
-            patient_id=current_user_id,
+            patient_id=target_user_id,
             name=name,
             additional_notes=additional_notes
         )
@@ -43,9 +49,14 @@ def add_medical_condition():
 @jwt_required()
 def get_medical_conditions():
     current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    patient_id = None
+    if user.role_id in [Role.ADMIN_ID, Role.STAFF_ID]:
+        patient_id = request.args.get('patient_id')
+    target_user_id = patient_id if patient_id else current_user_id
 
     try: 
-        medical_conditions = MedicalProblem.query.filter_by(patient_id=current_user_id).all()
+        medical_conditions = MedicalProblem.query.filter_by(patient_id=target_user_id).all()
         conditions_list = [{'id': mc.id, 'name': mc.name, 'additional_notes': mc.additional_notes} for mc in medical_conditions]
         
         return jsonify({'medical-condition': conditions_list}), 200
@@ -56,10 +67,16 @@ def get_medical_conditions():
 @jwt_required()
 def update_medical_condition(id):
     current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    patient_id = None
+    if user.role_id in [Role.ADMIN_ID, Role.STAFF_ID]:
+        patient_id = request.args.get('patient_id')
+    target_user_id = patient_id if patient_id else current_user_id
+
     data = request.json
 
     try:
-        medical_condition = MedicalProblem.query.filter_by(id=id, patient_id=current_user_id).first()
+        medical_condition = MedicalProblem.query.filter_by(id=id, patient_id=target_user_id).first()
         
         if not medical_condition:
             return jsonify({'error': 'Medical condition not found or access denied'}), 404
@@ -77,8 +94,16 @@ def update_medical_condition(id):
 @jwt_required()
 def delete_medical_condition(id):
     current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    patient_id = None
+    if user.role_id in [Role.ADMIN_ID, Role.STAFF_ID]:
+        patient_id = request.args.get('patient_id')
+    target_user_id = patient_id if patient_id else current_user_id
+
+
+
     medical_condition = MedicalProblem.query.filter_by(
-        id=id, patient_id=current_user_id
+        id=id, patient_id=target_user_id
     ).first()
     if not medical_condition:
         return jsonify({"message": "Medical condition not found or access denied"}), 404
@@ -96,6 +121,13 @@ def delete_medical_condition(id):
 @jwt_required()
 def add_allergy():
     current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    patient_id = None
+    if user.role_id in [Role.ADMIN_ID, Role.STAFF_ID]:
+        patient_id = request.args.get('patient_id')
+    target_user_id = patient_id if patient_id else current_user_id
+
+
     data = request.json
     print("Data received:", data)
 
@@ -105,7 +137,7 @@ def add_allergy():
 
     try:
         allergy = Allergy (
-            patient_id=current_user_id,
+            patient_id=target_user_id,
             allergen=allergen,
             reaction=reaction,
             additional_notes=additional_notes
@@ -130,9 +162,14 @@ def add_allergy():
 @jwt_required()
 def get_allergies():
     current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    patient_id = None
+    if user.role_id in [Role.ADMIN_ID, Role.STAFF_ID]:
+        patient_id = request.args.get('patient_id')
+    target_user_id = patient_id if patient_id else current_user_id
 
     try:
-        allergies = Allergy.query.filter_by(patient_id=current_user_id).all()
+        allergies = Allergy.query.filter_by(patient_id=target_user_id).all()
         allergy_list = [{'id': allergy.id, 'allergen': allergy.allergen, 'reaction': allergy.reaction, 'additional_notes': allergy.additional_notes} for allergy in allergies]
         return jsonify({'allergy': allergy_list}), 200
     except Exception as e:
@@ -143,10 +180,16 @@ def get_allergies():
 @jwt_required()
 def update_allergy(id):
     current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    patient_id = None
+    if user.role_id in [Role.ADMIN_ID, Role.STAFF_ID]:
+        patient_id = request.args.get('patient_id')
+    target_user_id = patient_id if patient_id else current_user_id
+
     data = request.json
 
     try:
-        allergy = Allergy.query.filter_by(id=id, patient_id=current_user_id).first()
+        allergy = Allergy.query.filter_by(id=id, patient_id=target_user_id).first()
 
         if not allergy:
             return jsonify({'error': 'Allergy not found or access denied'}), 404
@@ -166,8 +209,15 @@ def update_allergy(id):
 @jwt_required()
 def delete_allergy(id):
     current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    patient_id = None
+    if user.role_id in [Role.ADMIN_ID, Role.STAFF_ID]:
+        patient_id = request.args.get('patient_id')
+    target_user_id = patient_id if patient_id else current_user_id
+
+
     allergy = Allergy.query.filter_by(
-        id=id, patient_id=current_user_id
+        id=id, patient_id=target_user_id
     ).first()
     if not allergy:
         return jsonify({"message": "Allergy not found or access denied"}), 404
@@ -187,6 +237,12 @@ def delete_allergy(id):
 @jwt_required()
 def add_medication():
     current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    patient_id = None
+    if user.role_id in [Role.ADMIN_ID, Role.STAFF_ID]:
+        patient_id = request.args.get('patient_id')
+    target_user_id = patient_id if patient_id else current_user_id
+
     data = request.json
 
     name = data.get('name')
@@ -196,7 +252,7 @@ def add_medication():
 
     try:
         medication = Medication(
-            patient_id=current_user_id,
+            patient_id=target_user_id,
             name=name,
             dosage=dosage,
             frequency=frequency,
@@ -222,9 +278,14 @@ def add_medication():
 @jwt_required()
 def get_medications():
     current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    patient_id = None
+    if user.role_id in [Role.ADMIN_ID, Role.STAFF_ID]:
+        patient_id = request.args.get('patient_id')
+    target_user_id = patient_id if patient_id else current_user_id
 
     try:
-        medications = Medication.query.filter_by(patient_id=current_user_id).all()
+        medications = Medication.query.filter_by(patient_id=target_user_id).all()
         medication_list = [{'id': med.id, 'name': med.name, 'dosage': med.dosage, 'frequency': med.frequency, 'additional_notes': med.additional_notes} for med in medications]
         return jsonify({'medication': medication_list}), 200
     except Exception as e:
@@ -234,10 +295,16 @@ def get_medications():
 @jwt_required()
 def update_medication(id):
     current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    patient_id = None
+    if user.role_id in [Role.ADMIN_ID, Role.STAFF_ID]:
+        patient_id = request.args.get('patient_id')
+    target_user_id = patient_id if patient_id else current_user_id
+
     data = request.json
 
     try:
-        medication = Medication.query.filter_by(id=id, patient_id=current_user_id).first()
+        medication = Medication.query.filter_by(id=id, patient_id=target_user_id).first()
 
         if not medication:
             return jsonify({'error': 'Medication not found or access denied'}), 404
@@ -259,8 +326,14 @@ def update_medication(id):
 @jwt_required()
 def delete_medication(id):
     current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    patient_id = None
+    if user.role_id in [Role.ADMIN_ID, Role.STAFF_ID]:
+        patient_id = request.args.get('patient_id')
+    target_user_id = patient_id if patient_id else current_user_id
+
     medication = Medication.query.filter_by(
-        id=id, patient_id=current_user_id
+        id=id, patient_id=target_user_id
     ).first()
     if not medication:
         return jsonify({"message": "Medication not found or access denied"}), 404
@@ -278,6 +351,13 @@ def delete_medication(id):
 @jwt_required()
 def add_surgery():
     current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    patient_id = None
+    if user.role_id in [Role.ADMIN_ID, Role.STAFF_ID]:
+        patient_id = request.args.get('patient_id')
+
+    target_user_id = patient_id if patient_id else current_user_id
+
     data = request.json
 
     surgery_type = data.get('surgery_type')
@@ -286,7 +366,7 @@ def add_surgery():
 
     try:
         surgery = SurgicalHistory(
-            patient_id=current_user_id,
+            patient_id=target_user_id,
             surgery_type=surgery_type,
             year=year,
             additional_notes=additional_notes
@@ -311,22 +391,37 @@ def add_surgery():
 @jwt_required()
 def get_surgeries():
     current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+
+    patient_id = None
+    if user.role_id in [Role.ADMIN_ID, Role.STAFF_ID]:
+        patient_id = request.args.get('patient_id')
+
+    target_user_id = patient_id if patient_id else current_user_id
+
     try: 
-        surgeries = SurgicalHistory.query.filter_by(patient_id=current_user_id).all()
+        surgeries = SurgicalHistory.query.filter_by(patient_id=target_user_id).all()
         surgery_list = [{'id': surgery.id, 'surgery_type': surgery.surgery_type, 'year': surgery.year, 'additional_notes': surgery.additional_notes} for surgery in surgeries]
         return jsonify({'surgery': surgery_list}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
-
+    
 @medical_bp.route('/surgery/<int:id>', methods=['PATCH'], endpoint='update_surgery')
 @jwt_required()
 def update_surgery(id):
     current_user_id=get_jwt_identity()
+    user = User.query.get(current_user_id)
+
+    patient_id = None
+    if user.role_id in [Role.ADMIN_ID, Role.STAFF_ID]:
+        patient_id = request.args.get('patient_id')
+
+    target_user_id = patient_id if patient_id else current_user_id
+
     data = request.json
 
     try:
-        surgery = SurgicalHistory.query.filter_by(id=id, patient_id=current_user_id).first()
+        surgery = SurgicalHistory.query.filter_by(id=id, patient_id=target_user_id).first()
 
         if not surgery:
             return jsonify({'error': 'Surgery not found or access denied'}), 404
@@ -346,8 +441,16 @@ def update_surgery(id):
 @jwt_required()
 def delete_surgery(id):
     current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    
+    patient_id = None
+    if user.role_id in [Role.ADMIN_ID, Role.STAFF_ID]:
+        patient_id = request.args.get('patient_id')
+
+    target_user_id = patient_id if patient_id else current_user_id
+
     surgery = SurgicalHistory.query.filter_by(
-        id=id, patient_id=current_user_id
+        id=id, patient_id=target_user_id
     ).first()
     if not surgery:
         return jsonify({"message": "Surgery not found or access denied"}), 404
@@ -365,6 +468,11 @@ def delete_surgery(id):
 @jwt_required()
 def add_family_history():
     current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    patient_id = None
+    if user.role_id in [Role.ADMIN_ID, Role.STAFF_ID]:
+        patient_id = request.args.get('patient_id')
+    target_user_id = patient_id if patient_id else current_user_id
     data = request.json
 
     relation = data.get('relation')
@@ -373,7 +481,7 @@ def add_family_history():
 
     try:
         family_history = FamilyHistory(
-            patient_id=current_user_id,
+            patient_id=target_user_id,
             relation=relation,
             medical_condition=medical_condition,
             additional_notes=additional_notes
@@ -397,9 +505,14 @@ def add_family_history():
 @jwt_required()
 def get_family_histories():
     current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    patient_id = None
+    if user.role_id in [Role.ADMIN_ID, Role.STAFF_ID]:
+        patient_id = request.args.get('patient_id')
+    target_user_id = patient_id if patient_id else current_user_id
 
     try:
-        family_histories = FamilyHistory.query.filter_by(patient_id=current_user_id).all()
+        family_histories = FamilyHistory.query.filter_by(patient_id=target_user_id).all()
         history_list = [{'id': history.id, 'relation': history.relation, 'medical_condition': history.medical_condition, 'additional_notes': history.additional_notes} for history in family_histories]
         return jsonify({'family-history': history_list}), 200
     except Exception as e:
@@ -409,10 +522,16 @@ def get_family_histories():
 @jwt_required()
 def update_family_history(id):
     current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    patient_id = None
+    if user.role_id in [Role.ADMIN_ID, Role.STAFF_ID]:
+        patient_id = request.args.get('patient_id')
+    target_user_id = patient_id if patient_id else current_user_id
+
     data = request.json
 
     try:
-        family_history = FamilyHistory.query.filter_by(id=id, patient_id=current_user_id).first()
+        family_history = FamilyHistory.query.filter_by(id=id, patient_id=target_user_id).first()
 
         if not family_history:
             return jsonify({'error': 'Family history not found or access denied'}), 404
@@ -432,8 +551,14 @@ def update_family_history(id):
 @jwt_required()
 def delete_family_history(id):
     current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    patient_id = None
+    if user.role_id in [Role.ADMIN_ID, Role.STAFF_ID]:
+        patient_id = request.args.get('patient_id')
+    target_user_id = patient_id if patient_id else current_user_id
+
     family_history = FamilyHistory.query.filter_by(
-        id=id, patient_id=current_user_id
+        id=id, patient_id=target_user_id
     ).first()
     if not family_history:
         return jsonify({"message": "Family history not found or access denied"}), 404

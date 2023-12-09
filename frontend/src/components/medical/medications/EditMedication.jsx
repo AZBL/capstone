@@ -32,18 +32,21 @@ const EditMedication = ({ record, onUpdate, onCancel }) => {
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder="Medication Name"
+        required
       />
       <input
         type="text"
         value={dosage}
         onChange={(e) => setDosage(e.target.value)}
         placeholder="Dosage"
+        required
       />
       <input
         type="text"
         value={frequency}
         onChange={(e) => setFrequency(e.target.value)}
         placeholder="Frequency"
+        required
       />
       <textarea
         value={additionalNotes}

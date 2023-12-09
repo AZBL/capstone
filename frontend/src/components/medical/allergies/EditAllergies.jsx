@@ -28,11 +28,13 @@ const EditAllergies = ({ record, onUpdate, onCancel }) => {
         type="text"
         value={allergen}
         onChange={(e) => setAllergen(e.target.value)}
+        required
       />
       <input
         type="text"
         value={reaction}
         onChange={(e) => setReaction(e.target.value)}
+        required
       />
       <textarea
         value={additionalNotes}

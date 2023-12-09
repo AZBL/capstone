@@ -67,7 +67,7 @@ const MessageForm = ({ parentMessage, initialSubject }) => {
           {parentMessage.sender_last_name}
         </p>
       ) : (
-        <UserSearch setRecipient={setRecipient} />
+        <UserSearch onUserSelect={setRecipient} />
       )}
       <input
         type="text"

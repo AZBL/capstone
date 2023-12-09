@@ -3,14 +3,14 @@ import useMedicalData from "../../../hooks/useMedicalData";
 import AddMedication from "./AddMedication";
 import EditMedication from "./EditMedication";
 
-const Medications = () => {
+const Medications = ({ patientId }) => {
   const {
     data: medicationData,
     fetchData,
     addData,
     updateData,
     deleteData,
-  } = useMedicalData("medication");
+  } = useMedicalData("medication", patientId);
 
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -18,7 +18,7 @@ const Medications = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [patientId]);
 
   const handleAdd = async (newRecord) => {
     await addData(newRecord);

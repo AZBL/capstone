@@ -14,6 +14,7 @@ import MedicalHistory from "./components/medical/MedicalHistory";
 import Footer from "./components/Footer";
 import Warning from "./components/Warning";
 import Staff from "./components/Staff";
+import PatientHistory from "./components/medical/PatientHistory";
 
 import { AuthProvider } from "./contexts/AuthContext";
 
@@ -40,6 +41,10 @@ function App() {
                   element={<SentMessageContent />}
                 />
                 <Route path="medical-history" element={<MedicalHistory />} />
+                <Route
+                  path="patient-history"
+                  element={<PatientHistory />}
+                ></Route>
               </Route>
               <Route path="signup" element={<SignUp />} />
               <Route path="signin" element={<SignIn />} />

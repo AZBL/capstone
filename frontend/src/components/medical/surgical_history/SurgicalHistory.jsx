@@ -3,21 +3,21 @@ import useMedicalData from "../../../hooks/useMedicalData";
 import AddSurgicalHistory from "./AddSurgicalHistory";
 import EditSurgicalHistory from "./EditSurgicalHistory";
 
-const SurgicalHistory = () => {
+const SurgicalHistory = ({ patientId }) => {
   const {
     data: surgeries,
     fetchData,
     addData,
     updateData,
     deleteData,
-  } = useMedicalData("surgery");
+  } = useMedicalData("surgery", patientId);
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [patientId]);
 
   const handleAdd = async (newRecord) => {
     await addData(newRecord);

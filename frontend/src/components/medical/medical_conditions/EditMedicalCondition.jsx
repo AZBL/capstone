@@ -25,11 +25,13 @@ const EditMedicalCondition = ({ onCancel, onUpdate, record }) => {
         type="text"
         value={name}
         onChange={(e) => setName(e.target.value)}
+        required
       />
       <textarea
         type="text"
         value={additionalNotes}
         onChange={(e) => setAdditionalNotes(e.target.value)}
+        required
       />
       <button className="medInfoButton" type="submit">
         Update

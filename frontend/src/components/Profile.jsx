@@ -1,10 +1,11 @@
 import { useAuth } from "../contexts/AuthContext";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { formatDate } from "../utils/formatDate";
-import UserSearch from "./UserSearch";
+// import UserSearch from "./UserSearch";
 
 const Profile = () => {
+  // const [recipient, setRecipient] = useState("");
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -46,8 +47,10 @@ const Profile = () => {
           <Link to="/profile/messages" className="profileLink">
             Messages
           </Link>
-          {/* <UserSearch /> */}
-          <p>Implement user search function here?</p>
+
+          <Link to="/profile/patient-history">Patient Info</Link>
+          {/* <UserSearch setRecipient={setRecipient} />
+          {recipient && <p>Selected Recipient ID: {recipient}</p>} */}
           <Outlet />
         </div>
       )}

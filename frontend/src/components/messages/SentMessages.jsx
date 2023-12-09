@@ -56,7 +56,7 @@ const SentMessages = () => {
             sentMessages.map((sentMessage) => (
               <div className="gridRow" key={sentMessage.id}>
                 <Link to={`/profile/sent-message/${sentMessage.id}`}>
-                  {sentMessage.recipient_first_name}
+                  {sentMessage.recipient_first_name}{" "}
                   {sentMessage.recipient_last_name}
                 </Link>
 

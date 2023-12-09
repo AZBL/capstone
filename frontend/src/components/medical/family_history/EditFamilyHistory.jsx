@@ -28,11 +28,13 @@ const EditFamilyHistory = ({ record, onUpdate, onCancel }) => {
         type="text"
         value={relation}
         onChange={(e) => setRelation(e.target.value)}
+        required
       />
       <input
         type="text"
         value={medicalCondition}
         onChange={(e) => setMedicalCondition(e.target.value)}
+        required
       />
       <textarea
         value={additionalNotes}

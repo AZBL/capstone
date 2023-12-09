@@ -2,14 +2,18 @@ import { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
 
-const useMedicalData = (endpoint) => {
+const useMedicalData = (endpoint, patientId = null) => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
   const { token } = useAuth();
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`/api/medical/${endpoint}`, {
+      const url = patientId
+        ? `/api/medical/${endpoint}?patient_id=${patientId}`
+        : `/api/medical/${endpoint}`;
+
+      const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -22,7 +26,11 @@ const useMedicalData = (endpoint) => {
 
   const addData = async (newData) => {
     try {
-      const response = await axios.post(`/api/medical/${endpoint}`, newData, {
+      const url = patientId
+        ? `/api/medical/${endpoint}?patient_id=${patientId}`
+        : `/api/medical/${endpoint}`;
+
+      const response = await axios.post(url, newData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -35,7 +43,11 @@ const useMedicalData = (endpoint) => {
 
   const updateData = async (id, updatedData) => {
     try {
-      await axios.patch(`/api/medical/${endpoint}/${id}`, updatedData, {
+      const url = patientId
+        ? `/api/medical/${endpoint}/${id}?patient_id=${patientId}`
+        : `/api/medical/${endpoint}/${id}`;
+
+      await axios.patch(url, updatedData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -51,8 +63,20 @@ const useMedicalData = (endpoint) => {
   };
 
   const deleteData = async (id) => {
+    const isConfirmed = window.confirm(
+      "Are you sure you want to delete this item?"
+    );
+
+    if (!isConfirmed) {
+      return;
+    }
+
     try {
-      await axios.delete(`/api/medical/${endpoint}/${id}`, {
+      const url = patientId
+        ? `/api/medical/${endpoint}/${id}?patient_id=${patientId}`
+        : `/api/medical/${endpoint}/${id}`;
+
+      await axios.delete(url, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -67,3 +91,4 @@ const useMedicalData = (endpoint) => {
 };
 
 export default useMedicalData;
+

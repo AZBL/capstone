@@ -29,8 +29,10 @@ const useMedicalData = (endpoint, patientId = null) => {
   const addData = async (newData) => {
     try {
       const url = patientId
-        ? `/api/medical/${endpoint}?patient_id=${patientId}`
-        : `/api/medical/${endpoint}`;
+        ? `${
+            import.meta.env.VITE_API_URL
+          }/api/medical/${endpoint}?patient_id=${patientId}`
+        : `${import.meta.env.VITE_API_URL}/api/medical/${endpoint}`;
 
       const response = await axios.post(url, newData, {
         headers: {
@@ -46,8 +48,10 @@ const useMedicalData = (endpoint, patientId = null) => {
   const updateData = async (id, updatedData) => {
     try {
       const url = patientId
-        ? `/api/medical/${endpoint}/${id}?patient_id=${patientId}`
-        : `/api/medical/${endpoint}/${id}`;
+        ? `${
+            import.meta.env.VITE_API_URL
+          }/api/medical/${endpoint}/${id}?patient_id=${patientId}`
+        : `${import.meta.env.VITE_API_URL}/api/medical/${endpoint}/${id}`;
 
       await axios.patch(url, updatedData, {
         headers: {
@@ -75,8 +79,10 @@ const useMedicalData = (endpoint, patientId = null) => {
 
     try {
       const url = patientId
-        ? `/api/medical/${endpoint}/${id}?patient_id=${patientId}`
-        : `/api/medical/${endpoint}/${id}`;
+        ? `${
+            import.meta.env.VITE_API_URL
+          }/api/medical/${endpoint}/${id}?patient_id=${patientId}`
+        : `${import.meta.env.VITE_API_URL}/api/medical/${endpoint}/${id}`;
 
       await axios.delete(url, {
         headers: {

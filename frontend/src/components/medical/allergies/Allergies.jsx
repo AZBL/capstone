@@ -17,7 +17,7 @@ const Allergies = ({ patientId }) => {
 
   useEffect(() => {
     fetchData();
-  }, [{ patientId }]);
+  }, [patientId]);
 
   const handleAdd = async (newRecord) => {
     await addData(newRecord);

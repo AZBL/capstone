@@ -18,7 +18,6 @@ def add_medical_condition():
     target_user_id = patient_id if patient_id else current_user_id
 
     data = request.json
-    print("Data received:", data)
 
     name = data.get('name')
     additional_notes = data.get('additional_notes')
@@ -129,7 +128,6 @@ def add_allergy():
 
 
     data = request.json
-    print("Data received:", data)
 
     allergen = data.get('allergen')
     reaction = data.get('reaction')

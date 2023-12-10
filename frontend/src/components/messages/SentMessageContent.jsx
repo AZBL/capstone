@@ -22,11 +22,14 @@ const SentMessageContent = () => {
   useEffect(() => {
     const fetchMessage = async () => {
       try {
-        const response = await axios.get(`/api/messages/sent/${messageId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/messages/sent/${messageId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setMessage(response.data);
       } catch (error) {
         console.error("Error fetching message:", error);

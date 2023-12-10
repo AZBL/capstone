@@ -23,11 +23,14 @@ const Messages = () => {
   const fetchMessages = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get("/api/messages/display", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/messages/display`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       setMessages(response.data);
     } catch (error) {
       console.error("Error getting messages:", error);

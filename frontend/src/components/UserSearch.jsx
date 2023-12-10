@@ -19,7 +19,7 @@ const UserSearch = ({ onUserSelect }) => {
       const timeoutId = setTimeout(async () => {
         try {
           const response = await axios.get(
-            `/api/users/search?q=${searchTerm}`,
+            `${import.meta.env.VITE_API_URL}/api/users/search?q=${searchTerm}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,

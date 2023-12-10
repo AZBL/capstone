@@ -18,13 +18,16 @@ const SignUp = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("/api/auth/register", {
-        first_name: firstName,
-        last_name: lastName,
-        email: email,
-        password: password,
-        dob: dob,
-      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/auth/register`,
+        {
+          first_name: firstName,
+          last_name: lastName,
+          email: email,
+          password: password,
+          dob: dob,
+        }
+      );
       console.log("Registration successful:", response.data);
       const user = response.data.user;
       const token = response.data.access_token;

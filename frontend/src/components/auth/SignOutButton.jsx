@@ -12,7 +12,7 @@ const SignOutButton = () => {
 
     try {
       const response = await axios.post(
-        "/api/auth/logout",
+        `${import.meta.env.VITE_API_URL}/api/auth/logout`,
         {},
         {
           headers: {

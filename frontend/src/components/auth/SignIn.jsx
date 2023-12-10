@@ -15,10 +15,13 @@ const SignIn = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("/api/auth/login", {
-        email: email,
-        password: password,
-      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/auth/login`,
+        {
+          email: email,
+          password: password,
+        }
+      );
       const user = response.data.user;
       console.log(user);
       const token = response.data.access_token;

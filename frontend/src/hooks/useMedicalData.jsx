@@ -10,8 +10,10 @@ const useMedicalData = (endpoint, patientId = null) => {
   const fetchData = async () => {
     try {
       const url = patientId
-        ? `/api/medical/${endpoint}?patient_id=${patientId}`
-        : `/api/medical/${endpoint}`;
+        ? `${
+            import.meta.env.VITE_API_URL
+          }/api/medical/${endpoint}?patient_id=${patientId}`
+        : `${import.meta.env.VITE_API_URL}/api/medical/${endpoint}`;
 
       const response = await axios.get(url, {
         headers: {
@@ -91,4 +93,3 @@ const useMedicalData = (endpoint, patientId = null) => {
 };
 
 export default useMedicalData;
-

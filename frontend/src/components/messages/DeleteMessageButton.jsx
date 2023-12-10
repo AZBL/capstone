@@ -15,11 +15,14 @@ const DeleteMessageButton = ({ messageId, onMessageDeleted }) => {
     if (isConfirmed) {
       try {
         console.log(messageId);
-        await axios.delete(`/api/messages/${messageId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        await axios.delete(
+          `${import.meta.env.VITE_API_URL}/api/messages/${messageId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         console.log("Message deleted");
         onMessageDeleted();
       } catch (error) {

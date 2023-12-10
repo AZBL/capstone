@@ -33,7 +33,7 @@ const MessageForm = ({ parentMessage, initialSubject }) => {
 
     try {
       const response = await axios.post(
-        "/api/messages/send_message",
+        `${import.meta.env.VITE_API_URL}/api/messages/send_message`,
         {
           recipient_id: recipient,
           subject,

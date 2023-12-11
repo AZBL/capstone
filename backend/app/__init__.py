@@ -8,6 +8,7 @@ from .routes.auth import auth_bp
 from .routes.messages import messages_bp
 from .routes.users import users_bp
 from .routes.medical import medical_bp
+from .routes.status import status_bp
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 import uuid
@@ -42,6 +43,7 @@ def create_app(config_name=None):
     app.register_blueprint(auth_bp)
     app.register_blueprint(messages_bp)
     app.register_blueprint(users_bp)
+    app.register_blueprint(status_bp)
 
 
     db.init_app(app)
@@ -53,5 +55,7 @@ def create_app(config_name=None):
     @app.route('/')
     def index():
         return jsonify(message="Flask API is running!")
+    
+    
         
     return app

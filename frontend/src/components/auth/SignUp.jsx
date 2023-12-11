@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
@@ -9,13 +9,39 @@ const SignUp = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [dob, setDob] = useState("");
+  const [error, setError] = useState("");
+  const [backendReady, setBackendReady] = useState(false);
+
   const { login } = useAuth();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const checkBackendStatus = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/status`
+        );
+        if (response.data.status === "ready") {
+          setBackendReady(true);
+        }
+      } catch (error) {
+        console.error("Error checking backend status:", error);
+        setError("Error checking server status. Please refresh the page.");
+      }
+    };
+    checkBackendStatus();
+  }, []);
+
   const handleSignUp = async (e) => {
     e.preventDefault();
+
+    if (!backendReady) {
+      setError(
+        "Sorry, our server is still loading. Please wait a moment and try again."
+      );
+      return;
+    }
 
     try {
       const response = await axios.post(

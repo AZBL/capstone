@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../contexts/AuthContext";
@@ -8,11 +8,36 @@ const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [backendReady, setBackendReady] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const checkBackendStatus = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/status`
+        );
+        if (response.data.status === "ready") {
+          setBackendReady(true);
+        }
+      } catch (error) {
+        console.error("Error checking backend status:", error);
+        setError("Error checking server status. Please refresh the page.");
+      }
+    };
+    checkBackendStatus();
+  }, []);
+
   const handleSignIn = async (e) => {
     e.preventDefault();
+
+    if (!backendReady) {
+      setError(
+        "Sorry, our server is still loading. Please wait a moment and try again."
+      );
+      return;
+    }
 
     try {
       const response = await axios.post(
@@ -43,7 +68,7 @@ const SignIn = () => {
       <h2>Sign In</h2>
 
       <div className="authMessage">
-        Don't have an account yet? <Link to="../signup">Sign Up </Link>
+        Don't have an account yet? <Link to="../signup">Sign Up</Link>
       </div>
       <form className="authFormContainer" onSubmit={handleSignIn}>
         <label htmlFor="email">Email</label>
@@ -63,7 +88,9 @@ const SignIn = () => {
 
         {error && <p className="error">{error}</p>}
 
-        <button className="formButton">Sign In</button>
+        <button className="formButton" type="submit">
+          Sign In
+        </button>
       </form>
     </div>
   );

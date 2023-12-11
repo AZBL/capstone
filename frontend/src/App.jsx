@@ -17,10 +17,26 @@ import Staff from "./components/Staff";
 import PatientHistory from "./components/medical/PatientHistory";
 
 import { AuthProvider } from "./contexts/AuthContext";
-
+import axios from "axios";
+import { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 function App() {
+  useEffect(() => {
+    const wakeUpBackend = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/wakeup`
+        );
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error waking up the backend:", error);
+      }
+    };
+
+    wakeUpBackend();
+  }, []);
+
   return (
     <Router>
       <AuthProvider>

@@ -36,7 +36,7 @@ def create_app(config_name=None):
         return {'jti': str(uuid.uuid4())}
 
 
-    CORS(app, resources={r"/api/*": {"origins": "https://primecare.vercel.app"}})
+    CORS(app)
 
     app.register_blueprint(medical_bp)
     app.register_blueprint(auth_bp)

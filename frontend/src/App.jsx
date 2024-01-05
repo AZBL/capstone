@@ -15,47 +15,20 @@ import Footer from "./components/Footer";
 import Warning from "./components/Warning";
 import Staff from "./components/Staff";
 import PatientHistory from "./components/medical/PatientHistory";
+import WakeUp from "./components/WakeUp";
 
 import { AuthProvider } from "./contexts/AuthContext";
 import axios from "axios";
-import { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 function App() {
-  useEffect(() => {
-    const totalAttempts = 3;
-    let attempt = 0;
-    const interval = 5000; // 5 seconds
-
-    const wakeUpBackend = async () => {
-      console.log(
-        `Attempting to wake up the backend. Attempt number: ${attempt + 1}`
-      );
-
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/wakeup`
-        );
-        console.log(response.data);
-      } catch (error) {
-        console.error("Error waking up the backend:", error);
-      }
-
-      if (attempt < totalAttempts - 1) {
-        setTimeout(wakeUpBackend, interval);
-        attempt++;
-      }
-    };
-
-    wakeUpBackend();
-  }, []);
-
   return (
     <Router>
       <AuthProvider>
         <div className="mainContainer">
           <NavBar />
           <Warning />
+          <WakeUp />
 
           <main className="grid">
             <Routes>

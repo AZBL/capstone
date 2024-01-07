@@ -36,13 +36,14 @@ const WakeUp = () => {
 
   if (isLoading) {
     return (
-      <div>
+      <div className="wakeUpContainer">
         <div className="loader"></div>
-        <p className="wakeUpMessage">
+        <div className="wakeUpMessage">
           Please be patient while the server loads before attempting to sign in
           or create an account. Feel free to browse the rest of the site in the
           meantime!
-        </p>
+        </div>
+        <div className="loader"></div>
       </div>
     );
   }
